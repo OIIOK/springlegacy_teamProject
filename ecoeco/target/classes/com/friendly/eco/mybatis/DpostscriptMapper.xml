@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dpostscript">
+	<!--resultMap 등록-->
+	<resultMap type="Dpostscript" id="dpostscriptMap">
+	<id column="dpostscript_idx" 				property="dpostscript_idx"/>
+	<result column="dpostscript_title"  		property="dpostscript_title"/>
+	<result column="dpostscript_writer"  	property="dpostscript_writer"/>
+	<result column="dpostscript_detail" 	 	property="dpostscript_detail"/>
+	
+		<!--association 1: mem_idx-->
+		<association 
+		column="mem_idx"
+		property="mem"
+		javaType="Mem"
+		select="Mem.select"
+		/>
+		
+		<!--association 2:dcontents_idx -->
+		<association 
+		column="dcontents_idx"
+		property="dcontents"		
+		javaType="Dcontents"
+		select="Dcontents.select" 
+		/>
+		
+	</resultMap>
+	<!--전체내역 조회-->
+	<select id="selectAll" resultMap="dpostscriptMap">
+		select * from dpostscript
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultMap="dpostscriptMap" parameterType="int">
+		select * from dpostscript where dpostscript_idx=#{dpostscript_idx}
+	</select>
+	
+	<!--기부후기 등록-->
+	<insert id="insert" parameterType="Dpostscript">
+		insert into dpostscript(dpostscript_idx, mem_idx, dcontents_idx, dpostscript_title, dpostscript_writer, dpostscript_detail) 
+		values(seq_dpostscript.nextval, #{mem.mem_idx}, #{dcontents.dcontents_idx}, #{dpostscript_title}, #{dpostscript_writer}, #{dpostscript_detail})
+	</insert>
+	
+	<!--기부후기 수정-->
+	<update id="update" parameterType="Dpostscript">
+		update dpostscript set dpostscript_title=#{dpostscript_title}, dpostscript_writer=#{dpostscript_writer},
+		dpostscript_detail=#{dpostscript_detail}
+		where dpostscript_idx=#{dpostscript_idx}
+	</update>
+	
+	<!--기부후기 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from dpostscript where dpostscript_idx=#{dpostscript_idx}
+	</delete>
+</mapper>

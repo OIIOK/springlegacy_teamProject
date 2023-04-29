@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Fwish">
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Fwish">
+		select * from fwish
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultType="Fwish" parameterType="int">
+		select * from fwish where fwish_idx=#{fwishidx}
+	</select>
+	
+	<!--기부글 관심 등록-->
+	<insert id="insert" parameterType="Fwish">
+		insert into fwish(fwish_idx, mem_idx, fcontents_idx, fwish) 
+		values(seq_fwish.nextval, #{mem.mem_idx}, #{fcontents.fcontents_idx}, #{fwish})
+	</insert>
+	
+	<!--기부글 관심 수정-->
+	<update id="update" parameterType="Fwish">
+		update fwish set fwish=#{fwish} where fwish_idx=#{fwish_idx}
+	</update>
+	
+	<!--기부글 관심 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from fwish where fwish_idx=#{fwish_idx}
+	</delete>
+
+</mapper>

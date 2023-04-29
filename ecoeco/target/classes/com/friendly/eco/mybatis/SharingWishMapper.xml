@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SharingWish">
+
+	<resultMap type="SharingWish" id="sharingWishMap">
+		<id column="sharing_wish_idx" property="sharing_wish_idx" />
+		<result column="sharing_wish" property="sharing_wish" />
+
+		<!-- Sharing 1:1 연결 -->
+		<association 
+			column="sharing_idx" 
+			javaType="Sharing"
+			property="sharing" 
+			select="Sharing.selectByPK" />
+
+		<!-- Mem 1:1 연결 -->
+		<association 
+			column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="SharingWish">
+		insert into sharing_wish(sharing_wish_idx, sharing_idx, mem_idx, sharing_wish)
+		 values(seq_sharing_wish.nextval, #{sharing.sharing_idx}, #{mem.mem_idx}, #{sharing_wish})
+	</insert>
+
+	<!-- R조회 : Sharing에 속한 댓글 목록 -->
+	<select id="selectBySharingPK" parameterType="int" resultMap="sharingWishMap">
+		select * from sharing_wish
+		 where sharing_idx = #{sharing_idx}
+	</select>
+
+	<!-- U수정 : mem_idx가 일치할 경우만 -->
+	<update id="update" parameterType="SharingWish">
+		update sharing_wish set sharing_wish = #{sharing_wish}
+		 where sharing_wish_idx = #{sharing_wish_idx} and mem_idx = {mem.mem_idx}
+	</update>
+
+	<!-- D삭제 : mem_idx가 일치할 경우만 -->
+	<delete id="delete" parameterType="int">
+		delete from sharing_wish
+		 where sharing_wish_idx = #{sharing_wish_idx} and mem_idx = {mem.mem_idx}
+	</delete>
+</mapper>

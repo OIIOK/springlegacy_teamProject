@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Fconsumer">
+<!--소정언니와 상의 후 수정할 것-->
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Fconsumer">
+		select * from fconsumer
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultType="Fconsumer" parameterType="int">
+		select * from fconsumer where fconsumer_idx=#{fconsumer_idx}
+	</select>
+	
+	<!--기부자 등록-->
+	<insert id="insert" parameterType="Fconsumer">
+		insert into fconsumer(fconsumer_idx, mem_idx, fcontents_idx, fconsumer_point_sum, fconsumer_deposit_sum) 
+		values(seq_fconsumernextval, #{mem.mem_idx}, #{fcontents.fcontents_idx}, #{fconsumer_point_sum},
+		#{fconsumer_deposit_sum})
+	</insert>
+	
+	<!--기부자 수정-->
+	<update id="update" parameterType="Fconsumer">
+		update fconsumer set fconsumer_point_sum=#{fconsumer_point_sum}, fconsumer_deposit_sum=#{fconsumer_deposit_sum}
+		where fconsumer_idx=#{fconsumer_idx}
+	</update>
+	
+	<!--기부자 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from fconsumer where fconsumer_idx=#{fconsumer_idx}
+	</delete>
+</mapper>

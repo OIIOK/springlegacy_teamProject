@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="cacheEnabled" value="false" /> 
+        <setting name="jdbcTypeForNull" value="NULL" /> 
+    </settings>
+
+	<typeAliases>
+		<!-- 이주희 -->
+		<typeAlias type="com.friendly.eco.domain.MemType" alias="MemType"/>
+	 	<typeAlias type="com.friendly.eco.domain.Mem" alias="Mem"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemPass" alias="MemPass"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemName" alias="MemName"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemBirth" alias="MemBirth"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemPhone" alias="MemPhone"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemEmail" alias="MemEmail"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemGender" alias="MemGender"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemNickname" alias="MemNickname"/>
+	 	<typeAlias type="com.friendly.eco.domain.SocietyMem" alias="SocietyMem"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemParent" alias="MemParent"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemSns" alias="MemSns"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemAddr" alias="MemAddr"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemLog" alias="MemLog"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemAgree" alias="MemAgree"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemRegistration" alias="MemRegistration"/>
+	 	<typeAlias type="com.friendly.eco.domain.MemStatus" alias="MemStatus"/>
+	 	<typeAlias type="com.friendly.eco.domain.BlockMem" alias="BlockMem"/>
+	 	<typeAlias type="com.friendly.eco.domain.DelMem" alias="DelMem"/>
+	 	<typeAlias type="com.friendly.eco.domain.Admin" alias="Admin"/>
+		
+		<!--김혜미-->
+		<typeAlias type="com.friendly.eco.domain.Dcontents" alias="Dcontents"/>
+		<typeAlias type="com.friendly.eco.domain.Dpostscript" alias="Dpostscript"/>
+		<typeAlias type="com.friendly.eco.domain.Duse" alias="Duse"/>
+		<typeAlias type="com.friendly.eco.domain.Dwish" alias="Dwish"/>
+		<typeAlias type="com.friendly.eco.domain.Donator" alias="Donator"/>
+		<typeAlias type="com.friendly.eco.domain.Fcontents" alias="Fcontents"/>
+		<typeAlias type="com.friendly.eco.domain.Freward" alias="Freward"/>
+		<typeAlias type="com.friendly.eco.domain.Fpostscript" alias="Fpostscript"/>
+		<typeAlias type="com.friendly.eco.domain.Fwish" alias="Fwish"/>
+		<typeAlias type="com.friendly.eco.domain.Fconsumer" alias="Fconsumer"/>
+		
+		<!--이하진-->
+		<typeAlias type="com.friendly.eco.domain.Chatter" alias="Chatter"/>
+		<typeAlias type="com.friendly.eco.domain.ChatterComments" alias="ChatterComments"/>
+		<typeAlias type="com.friendly.eco.domain.SharingCategory" alias="SharingCategory"/>
+		<typeAlias type="com.friendly.eco.domain.Sharing" alias="Sharing"/>
+		<typeAlias type="com.friendly.eco.domain.SharingWish" alias="SharingWish"/>
+		<typeAlias type="com.friendly.eco.domain.SharingApplicant" alias="SharingApplicant"/>
+		<typeAlias type="com.friendly.eco.domain.SharingReview" alias="SharingReview"/>
+		<typeAlias type="com.friendly.eco.domain.EcoMapCategory" alias="EcoMapCategory"/>
+		<typeAlias type="com.friendly.eco.domain.EcoMap" alias="EcoMap"/>
+		<typeAlias type="com.friendly.eco.domain.News" alias="News"/>
+		<typeAlias type="com.friendly.eco.domain.NewsComments" alias="NewsComments"/>
+		<typeAlias type="com.friendly.eco.domain.Sponsor" alias="Sponsor"/>
+		
+		<!--김미전-->
+		<typeAlias type="com.friendly.eco.domain.ChallConf" alias="ChallConf"/>
+		<typeAlias type="com.friendly.eco.domain.Challenge" alias="Challenge"/>
+		<typeAlias type="com.friendly.eco.domain.Challenger" alias="Challenger"/>
+		<typeAlias type="com.friendly.eco.domain.ChallengeState" alias="ChallengeState"/>
+		<typeAlias type="com.friendly.eco.domain.ChallengeType" alias="ChallengeType"/>
+		<typeAlias type="com.friendly.eco.domain.ChallPhoto" alias="ChallPhoto"/>
+		<typeAlias type="com.friendly.eco.domain.PhotoStatus" alias="PhotoStatus"/>
+		<typeAlias type="com.friendly.eco.domain.ManagementType" alias="ManagementType"/>
+
+		<!--김소정-->
+		<typeAlias type="com.friendly.eco.domain.Bud" alias="Bud"/>
+		<typeAlias type="com.friendly.eco.domain.BudType" alias="BudType"/>
+		<typeAlias type="com.friendly.eco.domain.ChAdminP" alias="ChAdminP"/>
+		<typeAlias type="com.friendly.eco.domain.ChGetP" alias="ChGetP"/>
+		<typeAlias type="com.friendly.eco.domain.ChMemDp" alias="ChMemDp"/>
+		<typeAlias type="com.friendly.eco.domain.DonaMemDp" alias="DonaMemDp"/>
+		<typeAlias type="com.friendly.eco.domain.DonaMemP" alias="DonaMemP"/>
+		<typeAlias type="com.friendly.eco.domain.DpAdminP" alias="DpAdminP"/>
+		<typeAlias type="com.friendly.eco.domain.DpMem" alias="DpMem"/>
+		<typeAlias type="com.friendly.eco.domain.Dpsit" alias="Dpsit"/>
+		<typeAlias type="com.friendly.eco.domain.DpsitChar" alias="DpsitChar"/>
+		<typeAlias type="com.friendly.eco.domain.FMemDp" alias="FMemDp"/>
+		<typeAlias type="com.friendly.eco.domain.FMemP" alias="FMemP"/>
+ 	</typeAliases>
+	
+	
+<!--mapper-->
+  <mappers>
+  	<!-- 이주희 -->
+    <mapper resource="com/friendly/eco/mybatis/MemTypeMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemPassMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemNameMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemBirthMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemPhoneMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemEmailMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemGenderMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemNicknameMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SocietyMemMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemParentMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemSnsMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemAddrMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemLogMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemAgreeMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemRegistrationMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/MemStatusMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/BlockMemMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/DelMemMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/AdminMapper.xml"/>
+    
+    <!--김혜미-->
+    <mapper resource="com/friendly/eco/mybatis/DcontentsMapper.xml"/>
+	 <mapper resource="com/friendly/eco/mybatis/DpostscriptMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/DuseMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/DwishMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/DonatorMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/FcontentsMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/FrewardMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/FpostscriptMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/FwishMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/FconsumerMapper.xml"/>
+ 	
+ 	<!--이하진-->
+    <mapper resource="com/friendly/eco/mybatis/ChatterMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ChatterCommentsMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SharingCategoryMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SharingMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SharingWishMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SharingApplicantMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SharingReviewMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/EcoMapCategoryMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/EcoMapMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/NewsMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/NewsCommentsMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/SponserMapper.xml"/>
+    
+    <!--김미전-->
+    <mapper resource="com/friendly/eco/mybatis/ChallConfMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ChallengeMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ChallengerMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ChallengeStateMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ChallengeTypeMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ChallPhotoMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/PhotoStatusMapper.xml"/>
+    <mapper resource="com/friendly/eco/mybatis/ManagementTypeMapper.xml"/>
+    
+    <!--김소정-->
+     <mapper resource="com/friendly/eco/mybatis/BudMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/BudTypeMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/ChAdminPMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/ChGetPMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/DonaMemDpMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/DonaMemPMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/DpAdminPMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/DpMemMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/DpsitCharMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/DpsitMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/FMemDpMapper.xml"/>
+     <mapper resource="com/friendly/eco/mybatis/FMemPMapper.xml"/>
+  </mappers>
+</configuration>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChatterComments">
+
+	<resultMap type="ChatterComments" id="chatterCommentsMap">
+		<id column="chattercomments_idx" property="chattercomments_idx" />
+		<result column="chattercomments_detail" property="chattercomments_detail" />
+		<result column="chattercomments_regdate" property="chattercomments_regdate" />
+
+		<!-- Chatter 1:1 연결 -->
+		<association 
+		column="chatter_idx" 
+		javaType="Chatter" 
+		property="chatter" 
+		select="Chatter.selectByPK" />
+
+		<!-- Mem 1:1 연결 -->
+		<association 
+		column="mem_idx" 
+		javaType="Mem" 
+		property="mem" 
+		select="Mem.select" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="ChatterComments">
+		insert into chatter_comments(chattercomments_idx, chatter_idx, mem_idx, chattercomments_detail)
+		values(seq_chatter_comments.nextval, #{chatter.chatter_idx}, #{mem.mem_idx}, #{chattercomments_detail})
+	</insert>
+
+	<!-- R조회 : Chatter에 속한 댓글 목록 (오름차순)-->
+	<!-- 무한루프 도니 닉네임은 resultMap으로 억지로 엮지 말고 아예 멤버테이블에서 따로 빼오자 -->
+	<select id="selectByChatterPK" parameterType="int" resultType="ChatterComments">
+		select * from chatter_comments
+		where chatter_idx = #{chatter.chatter_idx}
+		order by chattercomments_idx ASC
+	</select>
+
+	<!-- R조회 : 댓글 수 -->
+	<select id="selectCount" parameterType="int" resultType="int">
+		select count(*) from chatter_comments
+		where chatter_idx = #{chatter.chatter_idx}
+	</select>
+
+	<!-- U수정 -->
+	<update id="update" parameterType="ChatterComments">
+		update chatter_comments set chattercomments_detail = #{chattercomments_detail}
+		where chattercomments_idx = #{chattercomments_idx}
+	</update>
+
+	<!-- D삭제 : 한건-->
+	<delete id="deleteOne" parameterType="int">
+		delete from chatter_comments
+		where chattercomments_idx = #{chattercomments_idx}
+	</delete>
+		
+	<!-- D삭제 : Chatter에 속한 댓글 목록-->
+	<delete id="deleteByChatterPK" parameterType="int">
+		delete from chatter_comments
+		where chatter_idx = #{chatter.chatter_idx}
+	</delete>
+</mapper>

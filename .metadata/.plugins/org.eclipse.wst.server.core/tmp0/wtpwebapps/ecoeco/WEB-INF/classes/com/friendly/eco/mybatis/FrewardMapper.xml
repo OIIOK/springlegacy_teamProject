@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Freward">
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Freward">
+		select * from freward
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultType="Freward" parameterType="int">
+		select * from freward where freward_idx=#{freward_idx}
+	</select>
+	
+	<!--리워드 등록-->
+	<insert id="insert" parameterType="Freward">
+		insert into freward(freward_idx, fcontents_idx, freward_name, freward_price) 
+		values(seq_freward.nextval, #{fcontents.fcontents_idx}, #{freward_name}, #{freward_price})
+	</insert>
+	
+	<!--리워드 수정-->
+	<update id="update" parameterType="Freward">
+		update freward set freward_name=#{freward_name}, freward_price=#{freward_price}
+		where freward_idx=#{freward_idx}
+	</update>
+	
+	<!--리워드 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from freward where freward_idx=#{freward_idx}
+	</delete>
+
+</mapper>

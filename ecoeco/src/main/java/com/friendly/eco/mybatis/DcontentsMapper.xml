@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dcontents">
+	<resultMap type="Dcontents" 						id="dcontentsMap">
+		<id 		column="dcontents_idx" 				property="dcontents_idx" />
+		<result 	column="dcontents_title" 				property="dcontents_title"/>
+		<result 	column="dcontents_writer" 			property="dcontents_writer"/>
+		<result 	column="dcontents_thumimg" 		property="dcontents_thumimg"/>
+		<result 	column="dcontents_amount" 		property="dcontents_amount"/>
+		<result 	column="dcontents_detail" 			property="dcontents_detail"/>
+		<result 	column="dcontents_date" 			property="dcontents_date"/>
+		<result 	column="dcontents_startday" 		property="dcontents_startday"/>
+		<result 	column="dcontents_endday" 		property="dcontents_endday"/>
+	
+	<!--부모(mem)와 assocation-->
+	<association 
+	column="mem_idx"
+	property="mem" 
+	javaType="Mem"
+	select="Mem.select"
+	/>
+	
+	<!--자식(donator)과 collection-->
+	<collection 
+	column="dcontents_idx"
+	property="donatorList"
+	javaType="java.util.List"
+	ofType="Donator"
+	select="Donator.selectByDcontents"
+	 />
+	</resultMap>
+	
+	<!--내역 조회(회원별)-->
+	<select id="selectOfMem" resultMap="dcontentsMap" parameterType="int">
+		select * from dcontents order by dcontents_idx where mem_idx=#{mem_idx}
+	</select>
+	
+	<!--전체내역 조회(최신순)-->
+	<select id="selectAll" resultMap="dcontentsMap">
+		select * from dcontents order by dcontents_idx desc
+	</select>
+	
+	<!--전체내역 조회(종료임박순)-->
+	<select id="selectOfEnd" resultMap="dcontentsMap">
+		select * from dcontents order by dcontents_endday asc
+	</select>
+	
+	<!--전체내역 조회(모집금액 순)-->
+	<select id="selectOfAmount" resultMap="dcontentsMap">
+		select * from dcontents order by dcontents_amount desc
+	</select>
+		
+	<!-- 한 건 검색 -->
+	<select id="select" resultMap="dcontentsMap" parameterType="int">
+		select * from dcontents where dcontents_idx=#{dcontents_idx}
+	</select>
+	
+	<!--기부글등록-->
+	<insert id="insert" parameterType="Dcontents" >
+		insert into dcontents(dcontents_idx, mem_idx, dcontents_title, dcontents_writer, 
+		dcontents_thumimg, dcontents_amount, dcontents_detail, dcontents_startday, dcontents_endday) 
+		values(seq_dcontents.nextval, #{mem.mem_idx}, #{dcontents_title}, #{dcontents_writer}, 
+		#{dcontents_thumimg}, #{dcontents_amount}, #{dcontents_detail}, #{dcontents_startday}, 
+		#{dcontents_endday})
+	</insert>
+	
+	<!--기부글 수정-->
+	<update id="update" parameterType="Dcontents">
+		update dcontents set dcontents_title=#{dcontents_title}, dcontents_writer=#{dcontents_writer},
+		dcontents_thumimg=#{dcontents_thumimg},
+		dcontents_amount=#{dcontents_amount},
+		dcontents_detail=#{dcontents_detail}, 
+		dcontents_startday=#{dcontents_startday}, dcontents_endday=#{dcontents_endday}
+		where dcontents_idx=#{dcontents_idx}
+	</update>
+	
+	<!--기부글 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from dcontents where dcontents_idx=#{dcontents_idx}
+	</delete>
+	
+</mapper>

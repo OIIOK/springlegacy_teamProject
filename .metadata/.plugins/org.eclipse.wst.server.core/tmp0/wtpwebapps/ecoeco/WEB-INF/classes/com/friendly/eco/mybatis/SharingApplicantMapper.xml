@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SharingApplicant">
+
+	<resultMap type="SharingApplicant" id="sharingApplicantMap">
+		<id column="applicant_idx" property="applicant_idx" />
+		<result column="applicant_win" property="applicant_win" />
+
+		<!-- Sharing 1:1 연결 -->
+		<association 
+			column="sharing_idx" 
+			javaType="Sharing"
+			property="sharing" 
+			select="Sharing.selectByPK" />
+
+		<!-- Mem 1:1 연결 -->
+		<association 
+			column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="SharingApplicant">
+		insert into sharing_applicant(applicant_idx, sharing_idx, mem_idx)
+		 values(seq_sharing_applicant.nextval, #{sharing.sharing_idx}, #{mem.mem_idx})
+		 	
+		 <!-- 조회하자마자 idx 사용하기 위해 : 이거 이제 안씀 -->	
+		<selectKey 
+			keyColumn="applicant_idx"
+			keyProperty="applicant_idx"
+			order="AFTER"
+			resultType="int"
+		>
+			select seq_sharing_applicant.currval as applicant_idx from dual
+		</selectKey>
+		 
+	</insert>
+
+	<!-- R조회 : Sharing에 속한 신청자 목록 -->
+	<!-- 무한루프 도니 닉네임은 resultMap으로 억지로 엮지 말고 아예 멤버테이블에서 따로 빼오자 -->
+	<select id="selectBySharingPK" parameterType="int" resultType="SharingApplicant">
+		select * from sharing_applicant
+		 where sharing_idx = #{sharing.sharing_idx}
+		 order by applicant_idx ASC
+	</select>
+	
+	<!-- R조회 : 신청자 수 -->
+	<select id="selectCount" parameterType="int" resultType="int">
+		select count(*) from sharing_applicant
+		where sharing_idx = #{sharing.sharing_idx}
+	</select>
+	
+		<!-- R조회 : 당첨자 -->
+	<select id="selectByWin" parameterType="int" resultMap="sharingApplicantMap">
+		select * from sharing_applicant
+		 where applicant_win = 1
+	</select>
+
+	<!-- D삭제 : 한건-->
+	<delete id="deleteOne" parameterType="int">
+		delete from sharing_applicant
+		where applicant_idx = #{applicant_idx}
+	</delete>
+		
+	<!-- D삭제 : Sharing에 속한 댓글 목록-->
+	<delete id="deleteBySharingPK" parameterType="int">
+		delete from sharing_applicant
+		where sharing_idx = #{sharing.sharing_idx}
+	</delete>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChallengeState">
+
+	<!-- 최초 챌린지 등록 시 상태 가져오기 -->
+	<select id="selectByStateIdx" resultType="ChallengeState">
+		select challenge_state_idx from challenge_state where challenge_state='모집중'
+	</select>
+	
+	<select id="selectAll" resultType="ChallengeState">
+		select * from challenge_state 
+	</select>
+	
+	<select id="select" resultType="ChallengeState" parameterType="int">
+		select * from challenge_state where challenge_state_idx=#{challenge_state_idx}
+	</select>
+	
+	<insert id="insert" parameterType="ChallengeState">
+		insert into challenge_state(challenge_state_idx, challenge_state)
+		values(seq_challenge_state.nextval, #{challenge_state})
+	</insert>
+
+</mapper>

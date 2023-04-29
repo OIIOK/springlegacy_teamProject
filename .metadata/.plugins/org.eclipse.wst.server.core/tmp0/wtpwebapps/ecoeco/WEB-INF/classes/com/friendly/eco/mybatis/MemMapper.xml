@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mem">
+
+	<resultMap type="Mem" id="memMap">
+		<id 	   column="mem_idx" property="mem_idx"/>
+		<result column="mem_id" property="mem_id"/>
+		
+		<!-- memType과 association -->
+		<association 
+						column="mem_type_idx"
+						property="memType"
+						javaType="MemType"
+						select="MemType.select">
+		</association>
+		
+		<!-- memPass와 association -->
+	<association 
+						column="mem_idx"
+						property="memPass"
+						javaType="MemPass"
+						select="MemPass.selectMemPassByPK">
+		</association>
+	</resultMap>
+	
+
+	<!-- 닉네임 association , id 변경-->
+	<resultMap type="Mem" id="memNicknamdMap">
+		<id 	   column="mem_idx" property="mem_idx"/>
+		<result column="mem_id" property="mem_id"/>
+		
+		<association 
+						column="mem_type_idx"
+						property="memType"
+						javaType="MemType"
+						select="MemType.select">
+		</association>
+		
+		<association 
+						column="mem_idx"
+						property="memNickname"
+						javaType="MemNickname"
+						select="MemNickname.selectByMember">
+		</association>
+	</resultMap>
+
+	<!-- 로그인 시 사용 -->
+	<resultMap type="Mem" id="memLoginMap">
+		<id 	   column="mem_idx" property="mem_idx"/>
+		<result column="mem_id" property="mem_id"/>
+		
+		<!-- memType과 association -->
+		<association 
+						column="mem_type_idx"
+						property="memType"
+						javaType="MemType"
+						select="MemType.select">
+		</association>
+		
+		<!-- memPass와 association -->
+		<association 
+						column="mem_idx"
+						property="memPass"
+						javaType="MemPass"
+						select="MemPass.selectMemPassByPK">
+		</association>
+		
+		<!-- memNickname과 association -->
+		<association 
+						column="mem_idx"
+						property="memNickname"
+						javaType="MemNickname"
+						select="MemNickname.select">
+		</association>		
+		
+		
+	</resultMap>
+	 
+	<!-- 로그인 여부 확인 -->
+<!-- 	<select id="login" resultMap="memMap" parameterType="Mem">
+		select m.mem_idx, m.mem_id, p.mem_pass
+		from mem m, mem_pass p
+		where m.mem_idx = p.mem_idx 
+		and m.mem_id=#{mem_id}
+		and p.mem_pass=#{memPass.mem_pass}
+	</select>	 -->
+	
+
+	<!-- 일반 로그인 시 사용 -->
+	<select id="login" resultMap="memMap" parameterType="Mem">
+		select mem_id, mem_pass
+		from mem, mem_pass
+		where mem_id=#{mem_id} and mem_pass=#{memPass.mem_pass}
+	</select>
+	
+	<select id="selectAll" resultType="Mem">
+		select * from mem
+	</select>
+	
+	<!-- id로 가지고 와야 함 -->
+	<select id="select" resultMap="memLoginMap" parameterType="String">
+		select * from mem where mem_id=#{mem_id}
+	</select>
+	
+	<!-- idx로 가지고 와야 함 -->
+	<select id="selectByIdx" resultType="Mem" parameterType="Mem">
+		select * from mem where mem_idx=#{mem_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Mem">
+		<selectKey keyProperty="mem_idx" resultType="int" order="BEFORE">
+			select max(mem_idx)+1 from mem
+		</selectKey>
+	
+		insert into mem(mem_idx, mem_type_idx, mem_id)
+		values(#{mem_idx}, 1, #{mem_id})
+	</insert>
+	
+	<insert id="insertBysns" parameterType="Mem">	
+		<selectKey>
+			select max(mem_idx)+1 from mem			
+		</selectKey>
+		
+		insert into mem(mem_idx, mem_type_idx, mem_id)
+		values(#{mem_idx}, 2, #{mem_id})
+	</insert>
+	
+	<update id="update" parameterType="Mem">
+		update mem set mem_id=#{mem_id}
+		where mem_idx=#{mem_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem
+		where mem_idx=#{mem_idx}
+	</delete>
+	
+	
+</mapper>

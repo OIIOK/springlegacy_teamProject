@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Donator">
+
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Donator">
+		select * from donator
+	</select>
+	
+	<!--전체내역 조회(기부 참여자 순)-->
+	<select id="selectOfDonator" resultType="donator">
+		select sum(donator_idx) from donator where dcontents_idx 
+	</select>
+	
+	<!-- 한 건 검색-->
+	<select id="selectByDcontents" resultType="Donator" parameterType="int">
+		select * from donator where dcontents_idx=#{dcontents_idx}
+	</select>
+	
+	<!--기부자 등록-->
+	<insert id="insert" parameterType="Donator">
+		insert into donator(donator_idx, mem_idx, dcontents_idx, donator_point_sum, donator_deposit_sum) 
+		values(seq_donator.nextval, #{mem.mem_idx}, #{dcontents.dcontents_idx}, #{donator_point_sum},
+		#{donator_deposit_sum})
+	</insert>
+	
+	<!--기부자 수정-->
+	<update id="update" parameterType="Donator">
+		update donator set donator_point_sum=#{donator_point_sum}, donator_deposit_sum=#{donator_deposit_sum}
+		where donator_idx=#{donator_idx}
+	</update>
+	
+	<!--기부자 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from donator where donator_idx=#{donator_idx}
+	</delete>
+</mapper>

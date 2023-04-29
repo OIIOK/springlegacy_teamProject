@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemLog">
+	
+	<resultMap type="MemLog" id="MemLogMap">
+		<id 	   column="mem_log_idx" property="mem_log_idx"/>
+		<result column="mem_log_regdate" property="mem_log_regdate"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemLogMap">
+		select * from mem_log order by mem_log_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemLogMap" parameterType="int">
+		select * from mem_log 
+		where mem_log_idx=#{mem_log_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemLog">
+		insert into mem_log(mem_log_idx, mem_log_regdate)
+		 values(mem_log_seq.nextval, #{mem_log_regdate})
+	</insert>
+	
+	<update id="update" parameterType="MemLog">
+		update mem_log set mem_log_regdate=#{mem_log_regdate}
+		where mem_log_idx=#{mem_log_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_log where mem_log_idx=#{mem_log_idx}
+	</delete>
+</mapper>

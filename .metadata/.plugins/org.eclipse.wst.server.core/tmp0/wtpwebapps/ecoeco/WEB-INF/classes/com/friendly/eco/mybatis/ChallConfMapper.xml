@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChallConf">
+
+
+	<select id="selectAll" resultType="ChallConf">
+		select * from chall_conf
+	</select>
+	
+	<select id="select" resultType="ChallConf" parameterType="int">
+		select * from chall_conf where chall_conf_idx=#{chall_conf_idx}
+	</select>
+
+</mapper>

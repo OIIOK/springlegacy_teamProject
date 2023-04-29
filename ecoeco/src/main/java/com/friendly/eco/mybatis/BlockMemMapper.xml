@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BlockMem">
+	
+	<resultMap type="BlockMem" id="BlockMemMap">
+		<id 	   column="block_mem_idx" property="block_mem_idx"/>
+		<result column="block_mem_regdate" property="block_mem_regdate"/>
+		<result column="block_mem_reason" property="block_mem_reason"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_status_idx"
+						property="memStatus"
+						javaType="MemStatus"
+						select="MemStatus.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="BlockMemMap">
+		select * from block_mem 
+		order by block_mem_idx desc
+	</select>
+	
+	<select id="select" resultMap="BlockMemMap" parameterType="int">
+		select * from block_mem 
+		where block_mem_idx=#{block_mem_idx}
+	</select>
+	
+	<insert id="insert" parameterType="BlockMem">
+		insert into block_mem(block_mem_idx 
+											, block_mem_regdate
+											, block_mem_reason)
+		 values(block_mem_seq.nextval, #{block_mem_regdate}
+		 											, #{block_mem_reason})
+	</insert>
+	
+	<update id="update" parameterType="BlockMem">
+		update block_mem 
+		set block_mem_regdate=#{block_mem_regdate}
+			, block_mem_reason=#{block_mem_reason}
+		where block_mem_idx=#{block_mem_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from block_mem 
+		where block_mem_idx=#{block_mem_idx}
+	</delete>
+</mapper>

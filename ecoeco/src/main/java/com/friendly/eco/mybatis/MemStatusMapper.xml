@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemStatus">
+	
+	<resultMap type="MemStatus" id="MemStatusMap">
+		<id 	   column="mem_status_idx" property="mem_status_idx"/>
+		<result column="mem_status" property="mem_status"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemStatusMap">
+		select * from mem_status order by mem_status_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemStatusMap" parameterType="int">
+		select * from mem_status 
+		where mem_status_idx=#{mem_status_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemStatus">
+		insert into mem_status(mem_status_idx, mem_status)
+		 values(mem_status_seq.nextval, #{mem_status})
+	</insert>
+	
+	<update id="update" parameterType="MemStatus">
+		update mem_status set mem_status=#{mem_status}
+		where mem_status_idx=#{mem_status_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_status where mem_status_idx=#{mem_status_idx}
+	</delete>
+</mapper>

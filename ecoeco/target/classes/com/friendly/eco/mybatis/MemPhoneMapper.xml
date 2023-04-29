@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemPhone">
+	
+	<!-- <resultMap type="MemPhone" id="MemPhoneMap">
+		<id 	   column="mem_phone_idx" property="mem_phone_idx"/>
+		<result column="mem_phone" property="mem_phone"/>
+		
+		부모인 memberType과 association
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap> -->
+	
+	<select id="selectAll" resultType="MemPhone">
+		select * from mem_phone order by mem_phone_idx desc
+	</select>
+	
+	<select id="select" resultType="MemPhone" parameterType="int">
+		select * from mem_phone 
+		where mem_phone_idx=#{mem_phone_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemPhone">
+		insert into mem_phone(mem_phone_idx, mem_phone)
+		 values(seq_mem_phone.nextval, #{mem_phone})
+	</insert>
+	
+	<update id="update" parameterType="MemPhone">
+		update mem_phone set mem_phone=#{mem_phone}
+		where mem_phone_idx=#{mem_phone_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_phone where mem_phone_idx=#{mem_phone_idx}
+	</delete>
+</mapper>

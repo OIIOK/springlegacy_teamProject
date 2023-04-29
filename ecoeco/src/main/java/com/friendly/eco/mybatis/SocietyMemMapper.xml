@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocietyMem">
+	
+	<resultMap type="SocietyMem" id="SocietyMemMap">
+		<id 	   column="society_mem_idx" property="society_mem_idx"/>
+		<result column="society_mem_pass" property="society_mem_pass"/>
+		<result column="society_mem_name" property="society_mem_name"/>
+		<result column="society_mem_registration" property="society_mem_registration"/>
+		<result column="society_mem_clerk_name" property="society_mem_clerk_name"/>
+		<result column="society_mem_clerk_phone" property="society_mem_clerk_phone"/>
+		<result column="society_mem_clerk_email" property="society_mem_clerk_email"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="SocietyMemMap">
+		select * from society_mem order by society_mem_idx desc
+	</select>
+	
+	<select id="select" resultMap="SocietyMemMap" parameterType="int">
+		select * from society_mem 
+		where society_mem_idx=#{society_mem_idx}
+	</select>
+	
+	<insert id="insert" parameterType="SocietyMem">
+		insert into society_mem(society_mem_idx 
+											, society_mem_pass 
+											, society_mem_name
+											, society_mem_registration
+											, society_mem_clerk_name
+											, society_mem_clerk_phone
+											, society_mem_clerk_email) 
+		 values(society_mem_seq.nextval, #{mem_email}
+		 												 , #{society_mem_pass}
+		 												 , #{society_mem_name}
+		 												 , #{society_mem_registration}
+		 												 , #{society_mem_clerk_name}
+		 												 , #{society_mem_clerk_phone}
+		 												 , #{society_mem_clerk_email})
+	</insert>
+	
+	<update id="update" parameterType="SocietyMem">
+		update society_mem 
+		set society_mem_pass=#{society_mem_pass}
+			, society_mem_name=#{society_mem_name}
+		    , society_mem_registration=#{society_mem_registration}
+		    , society_mem_clerk_name=#{society_mem_clerk_name}
+		    , society_mem_clerk_phone=#{society_mem_clerk_phone}
+		    , society_mem_clerk_email=#{society_mem_clerk_email}
+		where society_mem_idx=#{society_mem_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from society_mem where society_mem_idx=#{society_mem_idx}
+	</delete>
+</mapper>

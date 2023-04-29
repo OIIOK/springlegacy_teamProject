@@ -1,0 +1,377 @@
+<%@page import="com.friendly.eco.domain.Mem"%>
+<%@page import="com.friendly.eco.domain.ChatterComments"%>
+<%@page import="com.friendly.eco.domain.Chatter"%>
+<%@page import="java.util.List"%>
+<%@page import="com.friendly.eco.util.PageManager"%>
+<%@page import="com.friendly.eco.model.community.MybatisChatterDAO"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+
+<%
+	//getAttribute : 서버가 다른 서버에서 요청의 값을 전달받음
+	Mem mem2 = (Mem)request.getAttribute("mem");
+	Chatter chatter = (Chatter)request.getAttribute("chatter");
+	ChatterComments chatterComments = (ChatterComments)request.getAttribute("chatterComments");
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<title>에코수다</title>
+
+<head>
+<!-- header_link Start -->
+<%@ include file="../inc/header_link.jsp"%>
+<!-- header_link End -->
+
+<!-- Latest compiled and minified CSS -->
+<!-- 기본 템플릿 설정과 충돌함, 호버 효과는 포기하자!
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+	 -->
+<!-- jQuery library -->
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+<!-- Popper JS -->
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<style type="text/css">
+#detail {
+	overflow: auto;
+}
+</style>
+
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <%@ include file="../inc/spinner.jsp" %>
+        <!-- Spinner End -->
+
+        <!-- Topbar Start -->
+        <%@ include file="../inc/topbar.jsp" %>
+        <!-- Topbar End -->
+
+            <!-- Navbar Start -->
+            <%@ include file="../inc/navbar.jsp" %>
+                <!-- Navbar End -->
+
+                <!-- Page Header Start -->
+                <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="container text-center py-5">
+                        <h1 class="display-3 text-white mb-4 animated slideInDown">에코수다</h1>
+                        <nav aria-label="breadcrumb animated slideInDown">
+                                <h5 class="text-white">자유롭게 이야기를 나누는 공간입니다.</h5>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Page Header End -->
+
+                <div class="container-fluid">
+
+                    <div class="container">
+                        <h3 class="card-title" style="padding: 50px 0 25px 0">상세내용</h3>
+
+                        <!-- 상세 보기 -->
+                        <form id="form1">
+                            <input type="hidden" name="chatter_idx" value="<%=chatter.getChatter_idx()%>">
+                            <input type="hidden" name="mem_idx" value="<%=chatter.getChatter_idx()%>">
+                            <!--이자리에 닉네임으로 바꾸기~~~~~~~-------------------------------------------------->
+                            <div class="row">
+                                <div class="col-lg-12" style="float: none; margin: 0 auto; padding: 0 0 0 0">
+                                    <div class="card-body">
+                                        <div class="basic-list-group">
+                                            <ul class="list-group">
+                                                <li class="list-group-item active">
+                                                    <div class="row" style="padding: 0px 30px 0px 30px;">
+                                                        <label class="col-sm-8 col-form-label" style="vertical-align: middle; color: white"> 닉네임들어올곳 </label> 
+                                                        <label class="col-sm-1 col-form-label" style="vertical-align: middle; color: white" align="right"> 
+                                                            조회수 : <%=chatter.getChatter_hits()%>
+                                                        </label> 
+                                                        <label class="col-sm-3 col-form-label" style="vertical-align: middle; aline: right; color: white" align="right"> 
+                                                            등록일 : <%=chatter.getChatter_regdate()%>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div style="padding: 10px 30px 10px 30px;">
+                                                        <h5>
+                                                            <%=chatter.getChatter_title()%>
+                                                        </h5>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                               
+                                                    <div style="padding: 10px 30px 10px 30px;" id="detail">
+                                                        <%=chatter.getChatter_detail()%>
+                                                    </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- 상세 보기 -->
+
+                        <!-- 버튼 -->
+                        <div class="col " align="right" style="padding: 0px 15px 0px 0px;">
+                            <div class="btn-group" role="group" aria-label="기본 예">
+                                <button type="button" class="btn btn-secondary" id="bt_edit">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">수정</font>
+                                    </font>
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="bt_delete">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">삭제</font>
+                                    </font>
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="bt_list">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">목록</font>
+                                    </font>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 버튼 -->
+
+                        <!-- 댓글 목록 -->
+                        <div class="content-body" style="float: none; margin: 0 auto; padding: 15px">
+                        <form id="form2">
+                            <div class="container-fluid">
+                                <div class="row page-titles mx-0">
+                                    <div class="col-sm-6 p-md-0">
+                                        <h4>댓글</h4>
+                                    </div>
+                                </div>
+                                <!-- row -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <!-- 댓글 한 줄 -->
+                                                <!-- 3) chatterCommentsList에 담긴 목록 수만큼 row를 생성함 (idx와 json이 키,값으로 채워짐)-->
+                                                <template v-for="json in chatterCommentsList">
+                                                	<row :key="json.chattercomments_idx" :obj="json"/>
+                                                </template>
+                                                <!-- 댓글 한 줄 -->
+
+                                                <!-- 댓글 입력 폼 -->
+                                                <div class="form-group pt-3" style="padding: 50px 0 25px 0">
+                                                    <textarea class="form-control" placeholder="댓글을 입력하세요" id="chattercomments_detail" name="chattercomments_detail"
+                                                        style="height: 100px; margin: 0 auto"></textarea>
+                                                </div>
+                                                <div align="right">
+                                                    <button class="btn btn-dark btn-sl-sm" type="button" align="right" id="bt_CCregister">등록</button>
+                                                </div>
+                                                <!-- 댓글 입력 폼 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <!-- 댓글 목록 -->
+                    </div>
+                </div>
+
+
+                <!-- Footer Start -->
+                <%@ include file="../inc/footer.jsp" %>
+                    <!-- Footer End -->
+
+
+                    <!-- Copyright Start -->
+                    <%@ include file="../inc/capyright.jsp" %>
+                        <!-- Copyright End -->
+
+
+                        <!-- Back to Start -->
+                        <%@ include file="../inc/back_to_top.jsp" %>
+                            <!-- Back to End -->
+
+
+                            <!-- Footer link Start -->
+                            <%@ include file="../inc/footer_link.jsp" %>
+                                <!-- Footer link End -->
+
+	<!-- -------------------------------------------------------------------------------- -->
+
+	<script type="text/javascript">
+	
+	let form2;
+	
+	
+	//template으로 반복문 처리함
+	const row={
+			template:`
+				<div class="row" style="border-bottom: dotted 1px; padding:15px 0 0 0">
+                <div class="col-10" style="padding: 0px 30px 0px 30px;">
+                    <h5 class="text-primary">{{chatterComments.chattercomments_nickname}}</h5>
+                    <p class="mb-0">{{chatterComments.chattercomments_regdate}}</p>
+                    <p class="mt-3">
+                        <strong>{{chatterComments.chattercomments_detail}}</strong>
+                    </p>
+                </div>
+                <div class="col-2" align="right">
+                    <button type="button" class="btn btn-dark" name="bt_CCDelete" value="chatterComments.chattercomments_idx" @click="ccDel(chatterComments)" >삭제</button>
+                </div>
+            </div>
+			`, 
+			//4) row 인스턴스 생성 시 외부에서 전달되는 파라미터(json에 담긴 chatterComments)를 받아와 data로 나타냄
+			props:['obj'],
+			data(){
+				return{
+					chatterComments:this.obj
+				};
+			}, 
+			methods:{ //인덱스에 해당하는 댓글을 삭제함
+				
+				//댓글 삭제하기
+				ccDel(json){
+					$.ajax({
+						url : "/rest/community/chatter/"+ json.chattercomments_idx,
+						type : "DELETE",
+						success : function(result, status, xhr) {
+							alert("댓글 삭제 완료 :)");
+							ccList();
+						},
+						error: function(xhr, status, result){
+							console.log("xhr : ",xhr);
+							console.log("status : ",status);
+							console.log("result : ", result);
+						}
+					});
+				}
+			}
+	}
+	
+	form2 = new Vue({
+		el: '#form2',
+		components:{
+			row
+		},
+		data:{
+			chatterCommentsList:[]
+		}
+	});
+	
+		//삭제하기
+		function del() {
+			
+			console.log("선택한 글번호 : ", $("#form1 input[name='chatter_idx']").val());
+
+			//삭제 확인하기
+			if (!confirm("삭제하시겠습니까?")) {
+				return; 
+			}
+
+			$.ajax({
+				url : "/community/chatter/del/"+ $("#form1 input[name='chatter_idx']").val(),
+				type : "POST",
+				success : function(result, status, xhr) {
+					alert("삭제 완료 :)");
+					location.href = "/community/chatterList" //목록으로 이동
+				},
+				error: function(xhr, status, result){
+					console.log("xhr : ",xhr);
+					console.log("status : ",status);
+					console.log("result : ", result);
+				}
+			});
+		}
+		
+		//댓글 등록하기
+		function ccRegister(){
+
+			//입력값 formData로 담기(전송 대상에 이미지가 포함되기 때문)
+			//누구.누구로 확실하게 표기해줘야 함
+			let formData = new FormData();
+			formData.append("chatter.chatter_idx", $("#form1 input[name='chatter_idx']").val());
+			formData.append("mem.mem_idx", $("#form1 input[name='mem_idx']").val()); //실제 로그인 한 회원으로 수정해야 함------------------------------------
+			formData.append("chattercomments_detail", $("textarea[name='chattercomments_detail']").val()); 
+
+			console.log("chatter_idx : ", $("#form1 input[name='chatter_idx']").val());
+			console.log("mem_idx : ", $("#form1 input[name='mem_idx']").val());
+			console.log("chattercomments_detail : ", $("textarea[name='chattercomments_detail']").val());
+			console.log("formData : ", formData); 
+			
+			//controller로 전송하기
+			$.ajax({
+				url: "/rest/community/chatter/"+ $("#form1 input[name='chatter_idx']").val(),
+				type: "POST",
+				data : formData, 
+				processData : false, //쿼리 스트링화를 방지하기 위함
+				contentType:false, // application/x-www-form~~ 사용안함
+				success : function(result, status, xhr){
+					console.log("댓글등록정보", result.msg);
+					alert("댓글 등록 완료:)");
+					document.getElementById("chattercomments_detail").value=''; //댓글창 비우기
+					ccList();
+				},
+				error: function(xhr, status, result){
+					console.log("xhr : ",xhr);
+					console.log("status : ",status);
+					console.log("result : ", result);
+				}
+			});
+		}
+		
+		//댓글 가져오기
+		function ccList(){
+			
+			$.ajax({
+				url:"/rest/community/chatter/"+ $("#form1 input[name='chatter_idx']").val(),
+				type:"GET",
+				success:function(result, status, xhr){
+					form2.chatterCommentsList=result; //2) 가져오기 성공한 chatterComments을 List에 담음 
+				},
+				error:function(xhr, status, result){
+					console.log("xhr : ", xhr);
+					console.log("status : ", status);
+					console.log("result : ", result);
+				}
+			});
+		}
+		
+		//init
+		$(function() {
+			//1) 로드 시 댓글목록 가져오기
+			//ccList에서 로드 시 가져온 댓글목록을 chatterCommentsList에 담음
+			//form2에서 chatterCommentsList에 담긴 목록 수만큼 row를 생성함
+			ccList();
+
+			//수정버튼 이벤트 연결
+			$("#bt_edit").click(
+					function() {
+						//수정폼 이동
+						location.href="chatterEdit?chatter_idx="+$("#form1 input[name='chatter_idx']").val();
+					});
+			
+			//삭제버튼 이벤트 연결
+			$("#bt_delete").click(function() {
+				del();
+			});
+
+			//목록버튼 이벤트 연결
+			$("#bt_list").click(function() {
+				location.href = "/community/chatterList"
+			});
+			
+			//댓글등록버튼 이벤트 연결
+			$("#bt_CCregister").click(function() {
+				ccRegister();
+			});
+
+			//댓글삭제버튼 이벤트 연결
+			$("button[name='bt_CCDelete']").click(function() {
+				//var chattercomments_idx = $(this).data("chattercomments_idx");
+				//console.log("넘어온 var chattercomments_idx : ", chattercomments_idx);
+				//ccDel();
+			});
+		});
+	</script>
+</body>
+</html>

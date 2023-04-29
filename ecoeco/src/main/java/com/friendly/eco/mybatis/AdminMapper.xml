@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Admin">
+	
+	<select id="selectAll" resultType="Admin">
+		select * from admin order by admin_idx desc
+	</select>
+	
+	<select id="select" resultType="Admin" parameterType="int">
+		select * from admin 
+		where admin_idx=#{admin_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Admin">
+		insert into admin(admin_idx 
+											, admin_id
+											, admin_pass 
+											, admin_name
+											, admin_phone
+											, admin_email) 
+		 values(admin_seq.nextval, #{mem_email}
+		 												 , #{admin_pass}
+		 												 , #{admin_name}
+		 												 , #{admin_name}
+		 												 , #{admin_phone}
+		 												 , #{admin_email})
+	</insert>
+	
+	<update id="update" parameterType="Admin">
+		update admin 
+		set admin_id=#{admin_id}
+			, admin_pass=#{admin_pass}
+		    , admin_name=#{admin_name}
+		    , admin_email=#{admin_email}
+		where admin_idx=#{admin_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from admin where admin_idx=#{admin_idx}
+	</delete>
+</mapper>

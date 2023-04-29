@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemPass">
+	
+
+	
+	<!-- 아이디, 패스워드 일치 여부 확인 -->
+	<select id="selectMemPassByPK" resultType="MemPass" parameterType="int">
+		select * from mem where mem_idx=#{mem_idx}
+	</select>
+	
+	<select id="selectByPass" resultType="MemPass" parameterType="MemPass">
+		select * from mem_pass where mem_pass=#{mem_pass}
+	</select>
+	
+	<select id="selectAll" resultType="MemPass">
+		select * from mem_pass order by mem_pass_idx desc
+	</select>
+	
+	<select id="select" resultType="MemPass" parameterType="int">
+		select * from mem_pass 
+		where mem_pass_idx=#{mem_pass_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemPass">
+	
+		insert into mem_pass(mem_pass_idx, mem_idx, mem_pass)
+		 values(seq_mem_pass.nextval, #{mem_idx}, #{mem_pass})
+	</insert>
+	
+	<update id="update" parameterType="MemPass">
+		update mem_pass set mem_pass=#{mem_pass}
+		where mem_pass_idx=#{mem_pass_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_pass where mem_pass_idx=#{mem_pass_idx}
+	</delete>
+</mapper>

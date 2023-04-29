@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemGender">
+	
+	<resultMap type="MemGender" id="MemGenderMap">
+		<id 	   column="mem_gender_idx" property="mem_gender_idx"/>
+		<result column="mem_gender" property="mem_gender"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemGenderMap">
+		select * from mem_gender order by mem_gender_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemGenderMap" parameterType="int">
+		select * from mem_gender 
+		where mem_gender_idx=#{mem_gender_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemGender">
+		insert into mem_gender(mem_gender) values(#{mem_gender})
+	</insert>
+	
+	<update id="update" parameterType="MemGender">
+		update mem_gender set mem_gender=#{mem_gender}
+		where mem_gender_idx=#{mem_gender_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_gender where mem_gender_idx=#{mem_gender_idx}
+	</delete>
+</mapper>

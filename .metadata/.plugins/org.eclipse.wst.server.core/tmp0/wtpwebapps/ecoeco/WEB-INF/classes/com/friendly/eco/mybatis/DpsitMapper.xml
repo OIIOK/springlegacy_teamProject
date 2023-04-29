@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dpsit">
+
+	<!-- 예치금 관리 -->
+	<select id="selectAll" resultType="Dpsit">
+		select * from dpsit order by dpsit_idx
+	</select>
+	
+	<select id="select" parameterType="int">
+		select * from dpsit 
+		where dpsit_idx=#{dpsit.dpsit_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Dpsit">
+		insert into dpsit(dpsit_idx, dpsit_amount, dpsit_per, dpsit_bonus)
+		values(seq_bud.nextval, #{dpsit_idx},#{dpsit_amount},#{dpsit_per},#{dpsit_bonus})
+	</insert>
+	
+	<update id="update" parameterType="Dpsit">
+		update dpsit set dpsit_idx=#{dpsit_idx}
+		, dpsit_amount=#{dpsit_amount}
+		, dpsit_per=#{dpsit_per}
+		, dpsit_bonus=#{dpsit_bonus}
+		where dpsit_idx=#{dpsit_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dpsit where dpsit_idx=#{dpsit_idx}
+	</delete>
+</mapper>

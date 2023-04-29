@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChGetP">
+
+	<select id="selectAll">
+		select * from ch_get_p order by ch_get_p_idx desc
+	</select>
+	
+	<select id="select" parameterType="int">
+		select * from ch_get_p where ch_get_p_idx=#{ch_get_p_idx}
+	</select>
+	
+	<insert id="insert" parameterType="ChGetP">
+		insert into ch_get_p(ch_get_p_idx, challenge_idx, mem_idx, get_p)
+		values(seq_ch_get_p.nextval, #{ch_get_p_idx},#{challenge_idx},#{mem_idx},#{get_p})
+	</insert>
+	
+	<update id="update" parameterType="ChGetP">
+		update ch_get_p set ch_get_p_idx=#{ch_get_p_idx}
+		,challenge_idx=#{challenge_idx}
+		,mem_idx=#{mem_idx}
+		,get_p=#{get_p}
+		where ch_get_p_idx=#{ch_get_p_idx}
+	</update>
+		
+	<delete id="delete" parameterType="int">
+		delete from ch_get_p where ch_get_p_idx=#{ch_get_p_idx}
+	</delete>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DpMem">
+
+<select id="selectAll">
+	select * from dp_mem order by dp_mem_idx desc
+</select>
+
+<select id="select"  parameterType="int">
+	select * from dp_mem where dp_mem_idx=#{dp_mem_idx}
+</select>
+
+<insert id="insert" parameterType="DpMem">
+	insert into dp_mem(dp_mem_idx, dpsit_idx, mem_idx)
+	values(seq_dp_mem.nextval, #{dp_mem_idx}, #{dpsit.dpsit_idx}, #{mem.mem_idx})
+</insert>
+
+<update id="update" parameterType="DpMem">
+	update dp_mem set dp_mem_idx=#{dp_mem_idx}, dpsit_idx=#{dpsit.dpsit_idx}, mem_idx=#{mem.mem_idx}
+	where dp_mem_idx=#{dp_mem_idx}
+</update>
+
+<delete id="delete"  parameterType="int">
+	delete from dp_mem where dp_mem_idx=#{dp_mem_idx} 
+</delete>
+
+</mapper>

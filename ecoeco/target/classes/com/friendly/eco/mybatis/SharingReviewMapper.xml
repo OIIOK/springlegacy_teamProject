@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SharingReview">
+
+	<resultMap type="SharingReview" id="sharingReviewMap">
+		<id column="review_idx" property="review_idx" />
+		<result column="review_detail" property="review_detail" />
+		<result column="review_filename" property="review_filename" />
+		<result column="review_regdate" property="review_regdate" />
+
+		<!-- Sharing 1:1 연결 -->
+		<association 
+			column="sharing_idx" 
+			javaType="Sharing"
+			property="sharing" 
+			select="Sharing.selectByPK" />
+
+		<!-- Mem 1:1 연결 -->
+		<association column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="SharingReview">
+		insert into sharing_review(review_idx, sharing_idx, mem_idx, review_detail, review_filename)
+		 values(seq_sharing_review.nextval, #{sharing.sharing_idx}, #{mem.mem_idx}, #{review_detail}, #{review_filename})
+	</insert>
+
+	<!-- R조회 : Sharing에 속한 신청자 목록 -->
+	<select id="selectBySharingPK" parameterType="int" resultMap="sharingReviewMap">
+		select * from sharing_review
+		 where sharing_idx = #{sharing_idx}
+	</select>
+
+	<!-- R조회 : 댓글 수 -->
+	<select id="selectCount" parameterType="int" resultMap="sharingReviewMap">
+		select count(*) from sharing_review
+		 where sharing_idx = #{sharing_idx}
+	</select>
+
+	<!-- U수정 : mem_idx가 일치할 경우만 -->
+	<update id="update" parameterType="SharingReview">
+		update sharing_review set review_detail = #{review_detail}
+		, review_filename = #{review_filename}
+		 where review_idx = #{review_idx} and mem_idx = #{mem.mem_idx}
+	</update>
+
+	<!-- D삭제 : mem_idx가 일치할 경우만 -->
+	<delete id="delete" parameterType="int">
+		delete from sharing_review
+		 where review_idx = #{review_idx} and mem_idx = #{mem.mem_idx}
+	</delete>
+</mapper>

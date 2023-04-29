@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NewsComments">
+
+	<resultMap type="NewsComments" id="newsCommentsMap">
+		<id column="newscomments_idx" property="newscomments_idx" />
+		<result column="newscomments_detail"
+			property="newscomments_detail" />
+
+		<!-- 부모인 News 연결 -->
+		<association 
+			column="news_idx" 
+			javaType="News"
+			property="news" 
+			select="News.selectByPK" />
+
+		<!-- 부모인 Mem 연결 -->
+		<association 
+			column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="NewsComments">
+		insert into news_comments(newscomments_idx, news_idx, mem_idx, newscomments_detail)
+		 values(seq_news_comments.nextval, #{news.news_idx}, #{mem.mem_idx}, #{newscomments_detail})
+	</insert>
+
+	<!-- R조회 : News에 속한 댓글 목록 -->
+	<select id="selectByNewsPK" parameterType="int" resultMap="newsCommentsMap">
+		select * from news_comments
+		 where news_idx = #{news_idx}
+	</select>
+
+	<!-- R조회 : 댓글 수 -->
+	<select id="selectCount" parameterType="int" resultMap="newsCommentsMap">
+		select count(*) from news_comments
+		where news_idx = #{news_idx}
+	</select>
+
+	<!-- U수정 : mem_idx가 일치할 경우만 -->
+	<update id="update" parameterType="NewsComments">
+		update news_comments set newscomments_detail = {newscomments_detail}
+		 where newscomments_idx = #{newscomments_idx} and mem_idx = {mem.mem_idx}
+	</update>
+
+	<!-- D삭제 : mem_idx가 일치할 경우만 -->
+	<delete id="delete" parameterType="int">
+		delete from news_comments
+		where newscomments_idx = #{newscomments_idx} and mem_idx = {mem.mem_idx}
+	</delete>
+</mapper>

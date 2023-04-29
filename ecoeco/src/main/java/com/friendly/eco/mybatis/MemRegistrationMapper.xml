@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemRegistration">
+	
+	<resultMap type="MemRegistration" id="MemRegistrationMap">
+		<id 	   column="mem_registration_idx" property="mem_registration_idx"/>
+		<result column="mem_registration_front" property="mem_registration_front"/>
+		<result column="mem_registration_back" property="mem_registration_back"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemRegistrationMap">
+		select * from mem_registration 
+		order by mem_registration_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemRegistrationMap" parameterType="int">
+		select * from mem_registration 
+		where mem_registration_idx=#{mem_registration_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemRegistration">
+		insert into mem_registration(mem_registration_idx 
+											, mem_registration_front
+											, mem_registration_back)
+		 values(mem_registration_seq.nextval, #{mem_registration_front}
+		 											, #{mem_registration_back})
+	</insert>
+	
+	<update id="update" parameterType="MemRegistration">
+		update mem_registration 
+		set mem_registration_front=#{mem_registration_front}
+			, mem_registration_back=#{mem_registration_back}
+		where mem_registration_idx=#{mem_registration_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_registration 
+		where mem_registration_idx=#{mem_registration_idx}
+	</delete>
+</mapper>

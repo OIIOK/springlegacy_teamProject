@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemSns">
+	
+	<resultMap type="MemSns" id="MemSnsMap">
+		<id 	   column="mem_sns_idx" property="mem_sns_idx"/>
+		<result column="mem_sns_pass" property="mem_sns_pass"/>
+		<result column="mem_sns_nickname" property="mem_sns_nickname"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemSnsMap">
+		select * from mem_sns 
+		order by mem_sns_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemSnsMap" parameterType="int">
+		select * from mem_sns 
+		where mem_sns_idx=#{mem_sns_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemSns">
+		insert into mem_sns(mem_sns_idx 
+											, mem_sns_pass
+											, mem_sns_nickname)
+		 values(mem_sns_seq.nextval, #{mem_sns_pass}
+		 											, #{mem_sns_nickname})
+	</insert>
+	
+	<update id="update" parameterType="MemSns">
+		update mem_sns 
+		set mem_sns_pass=#{mem_sns_pass}
+			, mem_sns_nickname=#{mem_sns_nickname}
+		where mem_sns_idx=#{mem_sns_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_sns 
+		where mem_sns_idx=#{mem_sns_idx}
+	</delete>
+</mapper>

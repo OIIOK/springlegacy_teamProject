@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Chatter">
+
+	<resultMap type="Chatter" id="chatterMap">
+		<id column="chatter_idx" property="chatter_idx" />
+		<result column="chatter_title" property="chatter_title" />
+		<result column="chatter_detail" property="chatter_detail" />
+		<result column="chatter_thumbnail" property="chatter_thumbnail" />
+		<result column="chatter_regdate" property="chatter_regdate" />
+		<result column="chatter_hits" property="chatter_hits" />
+
+		<!-- Mem 1:1 연결 -->
+		<association 
+			column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+		<!-- Mem.selectByPK나 마찬가지임 -->
+
+		<!-- ChatterComments 1:다 연결 -->
+		<collection 
+			column="chatter_idx" 
+			javaType="List"
+			ofType="ChatterComments" 
+			property="chatterCommentsList"
+			select="ChatterComments.selectByChatterPK" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="Chatter">
+		insert into chatter(chatter_idx, mem_idx, chatter_title, chatter_detail, chatter_thumbnail)
+		values(seq_chatter.nextval, #{mem.mem_idx}, #{chatter_title}, #{chatter_detail}, #{chatter_thumbnail}) 
+		<!-- member_nickname은 mem_idx에서 넘겨받아야 하으로 Service에서 다룰 예정 -->
+	</insert>
+
+	<!-- R조회 : 목록 (내림차순)--> 
+	<!-- 내용과 댓글 등은 필요 없으니 resultMap 쓸 필요 없음  -->
+	<select id="selectAll" resultType="chatter">
+		select * from chatter 
+		 order by chatter_idx desc
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int" resultMap="chatterMap">
+		select * from chatter
+		where chatter_idx = #{chatter_idx}
+	</select>
+
+	<!-- U수정 -->
+	<update id="update" parameterType="Chatter">
+		update chatter set chatter_title = #{chatter_title}
+		, chatter_detail = #{chatter_detail}
+		, chatter_thumbnail = #{chatter_thumbnail}
+		where chatter_idx = #{chatter_idx}
+	</update>
+
+	<!-- D삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from chatter
+		where chatter_idx = #{chatter_idx}
+	</delete>
+</mapper>

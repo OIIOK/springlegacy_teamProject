@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FMemP">
+
+<select id="selectAll">
+	select * from f_mem_p order by f_mem_p_idx desc
+</select>
+
+<select id="select" parameterType="int">
+	select * from f_mem_p where f_mem_p_idx=#{f_mem_p_idx}
+</select>
+
+<insert id="insert" parameterType="FMemP">
+	insert into f_mem_p(f_mem_p_idx, mem.mem_idx, fundingcontents.funding_contents_idx)
+	values(seq_f_mem_p.nextval, #{f_mem_p_idx}, #{mem.mem_idx}, #{fundingcontents.funding_contents_idx})
+</insert>
+
+<update id="update" parameterType="FMemP">
+	update f_mem_p set f_mem_p_idx=#{f_mem_p_idx}, mem_idx=#{mem.mem_idx}, fundingcontents.funding_contents_idx=#{fundingcontents.funding_contents_idx}
+	where f_mem_p_idx=#{f_mem_p_idx}
+</update>
+
+<delete id="delete" parameterType="int">
+	delete from f_mem_p where f_mem_p_idx=#{f_mem_p_idx}
+</delete>
+
+</mapper>

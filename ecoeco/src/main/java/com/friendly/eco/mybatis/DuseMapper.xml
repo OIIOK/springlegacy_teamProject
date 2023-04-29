@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Duse">
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Duse">
+		select * from duse
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultType="Duse" parameterType="int">
+		select * from duse where duse_idx=#{duse_idx}
+	</select>
+	
+	<!--기부금 사용내역 등록-->
+	<insert id="insert" parameterType="Duse">
+		insert into duse(duse_idx, mem_idx, dcontents_idx, duse_type, duse_detail, duse_amount) 
+		values(seq_duse.nextval, #{mem.mem_idx}, #{dcontents.dcontents_idx}, #{duse_type}
+		, #{duse_detail}, #{duse_amount})
+	</insert>
+	
+	<!--기부금 사용내역 수정-->
+	<update id="update" parameterType="Duse">
+		update duse set duse_type=#{duse_type}, duse_detail=#{duse_detail}, duse_amount=#{duse_amount}
+		where duse_idx=#{duse_idx}
+	</update>
+	
+	<!--기부금 사용내역 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from duse where duse_idx=#{duse_idx}
+	</delete>
+
+</mapper>

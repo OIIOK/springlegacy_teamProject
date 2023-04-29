@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Challenge">
+
+	<resultMap type="Challenge" id="challengeMap">
+		<id column="challenge_idx" property="challenge_idx"/>
+		<result column="challenge_title" property="challenge_title"/>
+		<result column="challenge_thumb" property="challenge_thumb"/>
+		<result column="challenge_startdate" property="challenge_startdate"/>
+		<result column="challenge_enddate" property="challenge_enddate"/>
+		<result column="challenge_req" property="challenge_req"/>
+		<result column="challenge_detail" property="challenge_detail"/>
+		<result column="challenge_point" property="challenge_point"/>
+		<result column="challenge_fee_min" property="challenge_fee_min"/>
+		<result column="challenge_fee_max" property="challenge_fee_max"/>
+		
+		 <!-- ManagementType 가져오기 -->
+		<association column="management_type_idx" property="managementType" javaType="ManagementType" select="ManagementType.select"/>	
+		<association column="challenge_type_idx" property="challengeType" javaType="ChallengeType" select="ChallengeType.select"/>
+		<association column="challenge_state_idx" property="challengeState" javaType="ChallengeState" select="ChallengeState.select"/>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="challengeMap">
+		select * from challenge order by challenge_idx desc
+	</select>
+	
+	<select id="select" resultMap="challengeMap" parameterType="int">
+		select * from challenge where challenge_idx=#{challenge_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Challenge">
+		insert into challenge(
+			challenge_idx, 
+			management_type_idx, 
+			challenge_type_idx, 
+			challenge_state_idx, 
+			challenge_title, 
+			challenge_thumb,
+			challenge_startdate, 
+			challenge_enddate, 
+			challenge_req, 
+			challenge_detail, 
+			challenge_point, 
+			challenge_fee_min,
+			challenge_fee_max) 
+		values(seq_challenge.nextval, 
+			#{managementType.management_type_idx}, 
+			#{challengeType.challenge_type_idx}, 
+			#{challengeState.challenge_state_idx}, 
+			#{challenge_title}, 
+			#{challenge_thumb},
+			#{challenge_startdate}, 
+			#{challenge_enddate}, 
+			#{challenge_req}, 
+			#{challenge_detail}, 
+			#{challenge_point}, 
+			#{challenge_fee_min},
+			#{challenge_fee_max}) 
+	</insert>
+	
+	<update id="update" parameterType="Challenge">
+		update challenge set challenge_title=#{challenge_title},
+		challenge_thumb=#{challenge_thumb},
+		challenge_startdate=#{challenge_startdate},
+		challenge_enddate=#{challenge_enddate},
+		challenge_req=#{challenge_req},
+		challenge_detail=#{challenge_detail},
+		challenge_point=#{challenge_point},
+		challenge_fee=#{challenge_fee_min},
+		challenge_fee=#{challenge_fee_max},
+		where challenge_idx=#{challenge_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from challenge where challenge_idx=#{challenge_idx}
+	</delete>
+	
+</mapper>

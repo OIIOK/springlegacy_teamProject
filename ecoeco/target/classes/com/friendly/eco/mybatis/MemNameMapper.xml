@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemName">
+	
+<!-- 	<resultMap type="MemName" id="memNameMap">
+		<id 	   column="mem_name_idx" property="mem_name_idx"/>
+		<result column="mem_name" property="mem_name"/>
+		
+		부모인 memberType과 association
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap> -->
+	
+	<select id="selectAll" resultType="MemName">
+		select * from mem_name desc
+	</select>
+	
+	<select id="select" resultType="MemName" parameterType="int">
+		select * from mem_name 
+		where mem_name_idx=#{mem_name_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemName">
+		insert into mem_name(mem_name_idx, mem_idx, mem_name)
+		 values(seq_mem_name.nextval, #{mem_idx}, #{mem_name})
+	</insert>
+	
+	<update id="update" parameterType="MemName">
+		update mem_pass set mem_name=#{mem_name}
+		where mem_name_idx=#{mem_name_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_name where mem_name_idx=#{mem_name_idx}
+	</delete>
+	
+</mapper>

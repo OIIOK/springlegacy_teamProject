@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="News">
+
+	<resultMap type="News" id="newsMap">
+		<id column="news_idx" property="news_idx" />
+		<result column="news_agency" property="news_agency" />
+		<result column="news_title" property="news_title" />
+		<result column="news_detail" property="news_detail" />
+		<result column="news_regdate" property="news_regdate" />
+		<result column="news_hits" property="news_hits" />
+
+		<!-- 자식인 NewsComments 연결 -->
+		<collection 
+			column="news_idx" 
+			javaType="List"
+			ofType="NewsComments" 
+			property="newsCommentsList"
+			select="NewsComments.selectByNewsPK" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="News">
+		insert into news(news_idx, news_agency, news_title, news_detail)
+		 values(seq_news.nextval, #{news_agency}, #{news_title}, #{news_detail})
+	</insert>
+
+	<!-- R조회 : 목록 -->
+	<select id="selectAll" resultMap="newsMap">
+		select * from news order by news_idx desc
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int" resultMap="newsMap">
+		select * from news
+		 where news_idx = #{news_idx}
+	</select>
+
+	<!-- U수정 : 관리자만 -->
+	<update id="update" parameterType="News">
+		update news set news_agency = #{news_agency}
+		, news_title = #{news_title}
+		, news_detail = #{news_detail}
+		 where news_idx = #{news_idx}
+	</update>
+
+	<!-- D삭제 : 관리자만 -->
+	<delete id="delete" parameterType="int">
+		delete from news
+		where news_idx = #{news_idx}
+	</delete>
+</mapper>

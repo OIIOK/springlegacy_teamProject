@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DelMem">
+	
+	<resultMap type="DelMem" id="DelMemMap">
+		<id 	   column="del_mem_idx" property="del_mem_idx"/>
+		<result column="del_mem_regdate" property="del_mem_regdate"/>
+		<result column="del_mem_type" property="del_mem_type"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_status_idx"
+						property="memStatus"
+						javaType="MemStatus"
+						select="MemStatus.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="DelMemMap">
+		select * from del_mem 
+		order by del_mem_idx desc
+	</select>
+	
+	<select id="select" resultMap="DelMemMap" parameterType="int">
+		select * from del_mem 
+		where del_mem_idx=#{del_mem_idx}
+	</select>
+	
+	<insert id="insert" parameterType="DelMem">
+		insert into del_mem(del_mem_idx 
+											, del_mem_regdate
+											, del_mem_type)
+		 values(del_mem_seq.nextval, #{del_mem_regdate}
+		 											, #{del_mem_type})
+	</insert>
+	
+	<update id="update" parameterType="DelMem">
+		update del_mem 
+		set del_mem_regdate=#{del_mem_regdate}
+			, del_mem_type=#{del_mem_type}
+		where del_mem_idx=#{del_mem_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from del_mem 
+		where del_mem_idx=#{del_mem_idx}
+	</delete>
+</mapper>

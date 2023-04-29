@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Bud">
+
+	<resultMap type="Bud" id="budMap">
+		<id 		column="bud_idx" 		property="bud_idx"/>
+		<result 	column="bud_exp" 	property="bud_exp"/>
+		<result 	column="bud_regd" 	property="bud_regd"/>
+		<association 
+			column="bud_type_idx" 
+			javaType="BudType"
+			property="budType"
+			select="BudType.select"/>
+	</resultMap>
+
+	<select id="selectAll" resultMap="budMap">
+		select * from bud order by bud_idx desc
+	</select>
+		
+	<select id="select" parameterType="int" resultMap="budMap">
+		select * from bud
+		where bud_idx=#{bud_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Bud">
+		insert into bud(bud_idx, bud_type.bud_type_idx, bud_exp, bud_regd)
+		values(seq_bud.nextval, #{bud_idx},#{bud_type.bud_type_idx},#{bud_exp},#{bud_regd})
+	</insert>
+	
+	<update id="update" parameterType="Bud">
+		update bud set bud_idx=#{bud_idx}
+		, bud_type.bud_type_idx=#{bud_type.bud_type_idx}
+		, bud_exp=#{bud_exp}
+		, bud_regd=#{bud_regd}
+		where bud_idx=#{bud_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from bud where bud_idx=#{bud_idx}
+	</delete>
+</mapper>

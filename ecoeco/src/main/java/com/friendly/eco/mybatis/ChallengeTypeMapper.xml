@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChallengeType">
+	
+	<select id="selectAll" resultType="ChallengeType">
+		select * from challenge_type
+	</select>
+
+	<select id="select" resultType="ChallengeType" parameterType="int">
+		select * from challenge_type where challenge_type_idx=#{challenge_type_idx}
+	</select>
+	
+	<insert id="insert" parameterType="ChallengeType">
+		insert into challenge_type(challenge_type_idx, challenge_type)
+		values(seq_challenge_type.nextval, #{challenge_type})
+	</insert>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemNickname">
+	
+	<!-- resultMap을 쓰면 순환관계에 빠질 수 있으니 쓰면 안됨!!!!!-->
+	<select id="selectByMember" parameterType="int" resultType="MemNickname">
+		select * from mem_nixckname where mem_idx=#{mem_idx}
+	</select>
+	
+	<select id="selectAll" resultType="MemNickname">
+		select * from mem_nickname order by mem_nickname_idx desc
+	</select>
+	
+	<!-- 로그인 시 사용함 -->
+	<select id="select" resultType="MemNickname" parameterType="int"> 
+		select * from mem_nickname 
+		where mem_idx=#{mem_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemNickname">
+		insert into mem_nickname(mem_nickname_idx, mem_idx, mem_nickname)
+		 values(seq_mem_nickname.nextval, #{mem_idx}, #{mem_nickname})
+	</insert>
+	
+	<update id="update" parameterType="MemNickname">
+		update mem_nickname set mem_nickname=#{mem_nickname}
+		where mem_nickname_idx=#{mem_nickname_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_nickname where mem_nickname_idx=#{mem_nickname_idx}
+	</delete>
+</mapper>

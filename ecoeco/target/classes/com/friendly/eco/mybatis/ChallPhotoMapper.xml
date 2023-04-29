@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChallPhoto">
+
+	<resultMap type="ChallPhoto" id="challPhotoMap">
+		<id column="chall_photo_idx" property="chall_photo_idx"/>
+		<result column="chall_filename" property="chall_filename"/>
+		
+		<association 
+			column="challenger_idx" 
+			property="challenger"
+			javaType="Challenger"
+			select="Challenger.select"/>
+			
+		<association 
+			column="photo_stauts_idx" 
+			property="photoStatus"
+			javaType="PhotoStatus"
+			select="PhotoStatus.select"/>
+		
+	</resultMap>
+	
+	<select id="selectAll" resultMap="challPhotoMap">
+		select * from chall_photo 
+	</select>
+	
+	<!-- 해당 챌린지에 포함된 이미지 가져오기 -->
+	<select id="select" resultMap="challPhotoMap" parameterType="int">
+		select * from chall_photo where chall_photo_idx=#{chall_photo_idx}
+	</select>
+	
+	<!-- 챌린저에 대한 이미지 목록  -->
+	<select id="selectByChallenger" parameterType="int" resultMap="challPhotoMap">
+	select * from chall_photo where challenger_idx=#{challenger_idx}
+	</select>
+	
+</mapper>

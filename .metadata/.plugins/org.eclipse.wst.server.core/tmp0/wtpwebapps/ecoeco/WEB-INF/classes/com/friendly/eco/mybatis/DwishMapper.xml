@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dwish">
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Dwish">
+		select * from dwish
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultType="Dwish" parameterType="int">
+		select * from dwish where dwish_idx=#{dwish_idx}
+	</select>
+	
+	<!--기부글 관심 등록-->
+	<insert id="insert" parameterType="Dwish">
+		insert into dwish(dwish_idx, mem_idx, dcontents_idx, dwish) 
+		values(seq_dwish.nextval, #{mem.mem_idx}, #{dcontents.dcontents_idx}, #{dwish})
+	</insert>
+	
+	<!--기부글 관심 수정-->
+	<update id="update" parameterType="Dwish">
+		update dwish set dwish=#{dwish} where dwish_idx=#{dwish_idx}
+	</update>
+	
+	<!--기부글 관심 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from dwish where dwish_idx=#{dwish_idx}
+	</delete>
+
+</mapper>

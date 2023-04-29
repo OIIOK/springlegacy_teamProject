@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Fcontents">
+	<!-- <resultMap type="dcontents" 						id="dcontentsMap">
+		<id 		column="dcontents_idx" 				property="dcontents_idx" />
+		<result 	column="dcontents_title" 				property="dcontents_title"/>
+		<result 	column="dcontents_writer" 			property="dcontents_writer"/>
+		<result 	column="dcontents_summary" 		property="dcontents_summary"/>
+		<result 	column="dcontents_thumimg" 		property="dcontents_thumimg"/>
+		<result 	column="dcontents_repre_img" 	property="dcontents_repre_img"/>
+		<result 	column="dcontents_amount" 		property="dcontents_amount"/>
+		<result 	column="dcontents_detail" 			property="dcontents_detail"/>
+		<result 	column="dcontents_date" 			property="dcontents_date"/>
+		<result 	column="dcontents_startday" 		property="dcontents_startday"/>
+		<result 	column="dcontents_endday" 		property="dcontents_endday"/>
+	
+	부모와 assocation
+	<association 
+	column="mem_idx"
+	property="mem" 
+	javaType="mem"
+	select="mem.select"
+	/>
+	
+	자식과 collection
+	</resultMap> -->
+	
+	
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Fcontents">
+		select * from fcontents
+	</select>
+
+	<!-- 한 건 검색 -->
+	<select id="select" resultType="Fcontents" parameterType="int">
+		select * from fcontents where fcontents_idx=#{fcontents_idx}
+	</select>
+	
+	<!--펀딩글등록-->
+	<insert id="insert" parameterType="Fcontents">
+		insert into fcontents(fcontents_idx, mem_idx, fcontents_title, fcontents_writer, 
+		fcontents_summary, fcontents_thumimg, fcontents_repre_img
+		, fcontents_amount, fcontents_detail, fcontents_startday, fcontents_endday) 
+		values(seq_fcontents.nextval, #{mem.mem_idx}, #{fcontents_title}, #{fcontents_writer}, 
+		#{fcontents_summary}, #{fcontents_thumimg}, #{fcontents_repre_img},
+		#{fcontents_amount},#{fcontents_detail}, #{fcontents_startday}, #{fcontents_endday})
+	</insert>
+	
+	<!--펀딩글 수정-->
+	<update id="update" parameterType="Fcontents">
+		update fcontents set fcontents_title=#{fcontents_title}, fcontents_writer=#{fcontents_writer},
+		fcontents_summary=#{fcontents_summary}, fcontents_thumimg=#{fcontents_thumimg},
+		fcontents_repre_img=#{fcontents_repre_img}, fcontents_amount=#{fcontents_amount},
+		fcontents_detail=#{fcontents_detail}, fcontents_detail=#{fcontents_detail}, fcontents_date=#{fcontents_date}, 
+		fcontents_startday=#{fcontents_startday}, fcontents_endday=#{fcontents_endday}
+		where fcontents_idx=#{fcontents_idx}
+	</update>
+	
+	<!--펀딩글 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from dcontents where dcontents_idx=#{dcontents_idx}
+	</delete>
+	
+</mapper>

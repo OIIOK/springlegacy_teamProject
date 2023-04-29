@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Challenger">
+	  
+	<resultMap type="Challenger" id="challengerMap">
+		<id column="challenger_idx" property="challenger_idx"/>
+		<result column="challenge_fee" property="challenge_fee"/>
+		
+		<association column="challenge_idx" property="challenge" javaType="Challenge" select="Challenge.select"/>
+		<association column="mem_idx" property="mem" javaType="Mem" select="Mem.select"/>
+		<association column="chall_conf_idx" property="challConf" javaType="ChallConf" select="ChallConf.select"/>
+	</resultMap>
+	
+	<!-- 챌린지 idx에 대한 참여자 명단 가져오기 -->
+	<select id="selectByChallengeIdx" parameterType="int" resultMap="challengerMap">
+		select * from challenger where challenge_idx=#{challenge_idx}
+	</select>
+	
+	<!-- 회원정보로 챌린지 가져오기 -->
+	<select id="selectByMem" resultMap="challengerMap" parameterType="Challenger">
+		select * from challenger where mem_idx=#{mem.mem_idx}
+	</select>
+	
+	<insert id="insert" parameterType="Challenger">
+		insert into challenger(challenger_idx, challenge_idx, challenge_fee, mem_idx)
+		values(seq_chall_conf.nextval, #{challenge.challenge_idx}, #{challenge_fee}, #{mem.mem_idx})
+	</insert>
+	
+	<select id="selectAll" resultType="Challenger">
+		select * from challenger
+	</select>
+	
+	<select id="select" resultType="Challenger" parameterType="int">
+		select * from challenger where challenger_idx=#{challenger_idx}
+	</select>	
+</mapper>

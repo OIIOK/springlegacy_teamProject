@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemEmail">
+	
+<!-- 	<resultMap type="MemEmail" id="MemEmailMap">
+		<id 	   column="mem_email_idx" property="mem_email_idx"/>
+		<result column="mem_email" property="mem_email"/>
+		
+		부모인 memberType과 association
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap> -->
+	
+	<select id="selectAll" resultType="MemEmail">
+		select * from mem_email order by mem_email_idx desc
+	</select>
+	
+	<select id="select" resultType="MemEmail" parameterType="int">
+		select * from mem_email 
+		where mem_email_idx=#{mem_email_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemEmail">
+		insert into mem_email(mem_email_idx, mem_email) 
+		 values(seq_mem_email.nextval, #{mem_email})
+	</insert>
+	
+	<update id="update" parameterType="MemEmail">
+		update mem_email set mem_email=#{mem_email}
+		where mem_email_idx=#{mem_email_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_email where mem_email_idx=#{mem_email_idx}
+	</delete>
+</mapper>

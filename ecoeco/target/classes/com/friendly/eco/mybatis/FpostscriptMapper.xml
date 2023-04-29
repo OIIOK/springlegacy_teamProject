@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Fpostscript">
+	<!--전체내역 조회-->
+	<select id="selectAll" resultType="Fpostscript">
+		select * from fpostscript
+	</select>
+
+	<!-- 한 건 검색-->
+	<select id="select" resultType="Fpostscript" parameterType="int">
+		select * from fpostscript where fpostscript_idx=#{fpostscript_idx}
+	</select>
+	
+	<!--펀딩후기 등록-->
+	<insert id="insert" parameterType="Fpostscript">
+		insert into fpostscript(fpostscript_idx, mem_idx, fcontents_idx, fpostscript_detail) 
+		values(seq_fpostscript.nextval, #{mem.mem_idx}, #{fcontents.fcontents_idx}, #{fpostscript_detail})
+	</insert>
+	
+	<!--펀딩후기 수정-->
+	<update id="update" parameterType="Fpostscript">
+		update fpostscript set fpostscript_detail=#{fpostscript_detail}
+		where fpostscript_idx=#{fpostscript_idx}
+	</update>
+	
+	<!--펀딩후기 삭제-->
+	<delete id="delete" parameterType="int">
+		delete from fpostscript where fpostscript_idx=#{fpostscript_idx}
+	</delete>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Sharing">
+
+	<resultMap type="Sharing" id="sharingMap">
+		<id column="sharing_idx" property="sharing_idx" />
+		<result column="sharing_productname" property="sharing_productname" />
+		<result column="sharing_detail" property="sharing_detail" />
+		<result column="sharing_random_range" property="sharing_random_range" />
+		<result column="sharing_random_index" property="sharing_random_index" />
+		<result column="sharing_thumbnail" property="sharing_thumbnail" />
+		<result column="sharing_regdate" property="sharing_regdate" />
+		<result column="sharing_hits" property="sharing_hits" />
+
+		<!--SharingCategory 1:1 연결 -->
+		<association 
+		column="sharingcategory_idx"
+			javaType="SharingCategory" 
+			property="sharingCategory"
+			select="SharingCategory.selectByPK" />
+		<!-- Mem.selectByPK나 마찬가지임 -->
+
+		<!-- Mem 1:1 연결 -->
+		<association 
+			column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+			
+		<!-- SharingApplicant 1:다 연결 -->
+		<collection 
+			column="sharing_idx" 
+			javaType="List"
+			ofType="SharingApplicant" 
+			property="sharingApplicantList"
+			select="SharingApplicant.selectBySharingPK" />		
+
+		<!-- SharingWish 1:다 연결 -->
+		<collection 
+			column="sharing_idx" 
+			javaType="List"
+			ofType="SharingWish" 
+			property="sharingWishList"
+			select="SharingWish.selectBySharingPK" />
+
+		<!-- SharingReview는 거기서 연결하기로 함 -->
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="Sharing">
+		insert into sharing(sharing_idx, sharingcategory_idx, mem_idx, sharing_productname, sharing_detail, sharing_random_range, sharing_random_index, sharing_thumbnail)
+		 values(seq_sharing.nextval, #{sharingCategory.sharingcategory_idx}, #{mem.mem_idx}, #{sharing_productname}, #{sharing_detail}, #{sharing_random_range}, #{sharing_random_index}, #{sharing_thumbnail})
+	</insert>
+
+	<!-- R조회 : 목록 -->
+	<select id="selectAll" resultType="Sharing">
+		select * from sharing order by sharing_idx desc
+	</select>
+	
+	<!-- R조회 : 카테고리에 속한 목록 -->
+	<select id="selectBySCategoryPK" resultMap="sharingMap">
+		select * from sharing
+		 where sharingcategory_idx = #{sharingcategory_idx}
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int" resultMap="sharingMap">
+		select * from sharing
+		 where sharing_idx = #{sharing_idx}
+	</select>
+
+	<!-- U수정 -->
+	<update id="update" parameterType="Sharing">
+		update sharing set sharingcategory_idx = #{sharingCategory.sharingcategory_idx}
+		, sharing_productname = #{sharing_productname}
+		, sharing_detail = #{sharing_detail}
+		, sharing_thumbnail = #{sharing_thumbnail}
+		 where sharing_idx = #{sharing_idx}
+	</update>
+	
+	<!-- U수정 : 신청버튼 클릭에 따른 index 증가 -->
+	<update id="updateIndex" parameterType="Sharing">
+		update sharing set sharing_random_index = sharing_random_index+1
+		 where sharing_idx = #{sharing_idx}
+	</update>
+
+	<!-- D삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from sharing
+		where sharing_idx = #{sharing_idx}
+	</delete>
+</mapper>

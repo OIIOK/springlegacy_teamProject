@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SharingCategory">
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="SharingCategory">
+		insert into sharing_category(sharingcategory_idx, sharingcategory_categoryname)
+		 values(seq_sharing_category.nextval, #{sharingcategory_categoryname})
+	</insert>
+
+	<!-- R조회 : 목록 -->
+	<select id="selectAll" resultType="SharingCategory">
+		select * from sharing_category order by sharingcategory_idx desc
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int"
+		resultType="SharingCategory">
+		select * from sharing_category
+		where sharingcategory_idx = #{sharingcategory_idx}
+	</select>
+
+	<!-- U수정 : 관리자만 -->
+	<update id="update" parameterType="SharingCategory">
+		update sharing_category set sharingcategory_categoryname = #{sharingcategory_categoryname}
+		 where sharingcategory_idx = #{sharingcategory_idx}
+	</update>
+
+	<!-- D삭제 : 관리자만 -->
+	<delete id="delete" parameterType="int">
+		delete from sharing_category
+		 where sharingcategory_idx = #{sharingcategory_idx}
+	</delete>
+</mapper>

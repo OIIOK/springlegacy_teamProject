@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemAddr">
+	
+	<resultMap type="MemAddr" id="MemAddrMap">
+		<id 	   column="mem_addr_idx" property="mem_addr_idx"/>
+		<result column="mem_addr_main" property="mem_addr_main"/>
+		<result column="mem_addr_detail" property="mem_addr_detail"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemAddrMap">
+		select * from mem_addr 
+		order by mem_addr_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemAddrMap" parameterType="int">
+		select * from mem_addr 
+		where mem_addr_idx=#{mem_addr_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemAddr">
+		insert into mem_addr(mem_addr_idx 
+											, mem_addr_main
+											, mem_addr_detail)
+		 values(mem_addr_seq.nextval, #{mem_addr_main}
+		 											, #{mem_addr_detail})
+	</insert>
+	
+	<update id="update" parameterType="MemAddr">
+		update mem_addr 
+		set mem_addr_main=#{mem_addr_main}
+			, mem_addr_detail=#{mem_addr_detail}
+		where mem_addr_idx=#{mem_addr_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_addr 
+		where mem_addr_idx=#{mem_addr_idx}
+	</delete>
+</mapper>

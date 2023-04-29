@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EcoMapCategory">
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="EcoMapCategory">
+		insert into ecomap_category(ecomapcategory_idx, ecomapcategory_categoryname)
+		 values(seq_ecomap_category.nextval, #{ecomapcategory_categoryname})
+	</insert>
+
+	<!-- R조회 : 목록 -->
+	<select id="selectAll" resultType="EcoMapCategory">
+		select * from ecomap_category order by ecomapcategory_idx desc
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int" resultType="EcoMapCategory">
+		select * from ecomap_category
+		 where ecomapcategory_idx = #{ecomapcategory_idx}
+	</select>
+
+	<!-- U수정 : 관리자만 -->
+	<update id="update" parameterType="EcoMapCategory">
+		update ecomap_category set ecomapcategory_categoryname = #{ecomapcategory_categoryname}
+		 where ecomapcategory_idx = #{ecomapcategory_idx}
+	</update>
+
+	<!-- D삭제 : 관리자만 -->
+	<delete id="delete" parameterType="int">
+		delete from ecomap_category
+		 where ecomapcategory_idx = #{ecomapcategory_idx}
+	</delete>
+</mapper>

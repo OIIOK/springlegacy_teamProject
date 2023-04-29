@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DpAdminP">
+
+
+	<select id="selectAll">
+		select * from dp_admin_p order by dp_admin_p_idx desc
+	</select>
+	
+	<select id="select"  parameterType="int">
+		select * from ch_admin_p 
+		where dp_admin_p_idx=#{dp_admin_p_idx}
+	</select>
+	
+	<insert id="insert" parameterType="DpAdminP">
+		insert into dp_admin_p (dp_admin_p_idx, bud.bud_idx, dpsit.dpsit_idx)
+		values(seq_dp_admin_p.nextval, #{dp_admin_p_idx},#{bud.bud_idx},#{dpsit.dpsit_idx})
+	</insert>
+
+	<update id="update" parameterType="DpAdminP">
+		update dp_admin_p set dp_admin_p_idx=#{dp_admin_p_idx}
+		, bud_idx=#{bud.bud_idx}
+		, dpsit_idx=#{dpsit.dpsit_idx}
+		where dp_admin_p_idx=#{dp_admin_p_idx}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from dp_admin_p where dp_admin_p_idx=#{dp_admin_p_idx}
+	</delete>
+</mapper>

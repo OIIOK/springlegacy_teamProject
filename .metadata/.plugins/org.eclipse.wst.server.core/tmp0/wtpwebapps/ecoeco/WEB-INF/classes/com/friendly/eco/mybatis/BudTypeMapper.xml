@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BudType">
+
+	<select id="selectAll">
+		select * from bud_type order by bud_type_idx desc
+	</select>
+	
+	<select id="select"  parameterType="int">
+		select * from bud_type 
+		where bud_type_idx=#{bud_type_idx}
+	</select>
+	
+	<insert id="insert" parameterType="BudType">
+		insert into bud_type(bud_type_idx, bud_type)
+		values(seq_bud_type.nextval, #{bud_type_idx}, #{bud_type})
+	</insert>
+	
+	<update id="update" parameterType="BudType">
+		update bud_type set bud_type_idx=#{bud_type_idx}, bud_type=#{bud_type}
+		where bud_type_idx=#{bud_type_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from bud_type where bud_type_idx=#{bud_type_idx}
+	</delete>
+</mapper>

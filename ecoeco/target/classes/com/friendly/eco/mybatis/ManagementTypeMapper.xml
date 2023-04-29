@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ManagementType">
+	
+	<resultMap 	type="ManagementType" 					id="managementTypeMap">
+		<id 			column="managemen_type_idx" 		property="management_type_idx"/>
+		<result 		column="management_type_name" 	property="management_type_name"/>
+		
+		<association column="mem_idx" property="mem" javaType="Mem" select="Mem.select"/>
+	</resultMap>
+ 
+	<!-- 회원 정보를 포함한 모든 레코드 가져오기 -->
+	<select id="selectAll" resultMap="managementTypeMap">
+		select management_type_idx, mem_idx, management_type_name from management_type
+	</select>
+	
+	<!-- 회원정보를 포함한 레코드 한건 가져오기 -->
+	<select id="select" resultMap="managementTypeMap" parameterType="int">
+		select * from management_type where management_type_idx=#{management_type_idx}
+	</select>
+	
+	<insert id="insert" parameterType="ManagementType">
+		insert into management_type(management_type_idx, mem_idx, management_type_name)
+		values(seq_management_type.nextval, #{mem.mem_idx}, #{management_type_name})
+	</insert>
+
+</mapper>

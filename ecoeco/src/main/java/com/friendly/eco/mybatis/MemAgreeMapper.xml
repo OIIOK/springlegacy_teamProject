@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemAgree">
+	
+	<resultMap type="MemAgree" id="MemAgreeMap">
+		<id 	   column="mem_agree_idx" property="mem_agree_idx"/>
+		<result column="mem_agree_email" property="mem_agree_email"/>
+		<result column="mem_agree_sns" property="mem_agree_sns"/>
+		<result column="mem_agree_person" property="mem_agree_person"/>
+		
+		<!-- 부모인 memberType과 association -->
+		<association 
+						column="mem_idx"
+						property="mem"
+						javaType="Mem"
+						select="Mem.select">
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="MemAgreeMap">
+		select * from mem_agree 
+		order by mem_agree_idx desc
+	</select>
+	
+	<select id="select" resultMap="MemAgreeMap" parameterType="int">
+		select * from mem_agree 
+		where mem_agree_idx=#{mem_agree_idx}
+	</select>
+	
+	<insert id="insert" parameterType="MemAgree">
+		insert into mem_agree(mem_agree_idx 
+											, mem_agree_email
+											, mem_agree_sns
+											, mem_agree_person)
+		 values(mem_agree_seq.nextval, #{mem_agree_email}
+		 											, #{mem_agree_sns}
+		 											, #{mem_agree_person})
+	</insert>
+	
+	<update id="update" parameterType="MemAgree">
+		update mem_agree 
+		set mem_agree_email=#{mem_agree_email}
+			, mem_agree_sns=#{mem_agree_sns}
+			, mem_agree_person=#{mem_agree_person}
+		where mem_agree_idx=#{mem_agree_idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from mem_agree 
+		where mem_agree_idx=#{mem_agree_idx}
+	</delete>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Sponsor">
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="Sponsor">
+		insert into sponsor(sponsor_idx, sponsor_company, sponsor_amount, sponsor_bank, sponsor_account, sponsor_manager, sponsor_tel)
+		 values(seq_sponsor.nextval, #{sponsor_company}, #{sponsor_amount}, #{sponsor_bank}, #{sponsor_account}, #{sponsor_manager}, #{sponsor_tel})
+	</insert>
+
+	<!-- R조회 : 목록 -->
+	<select id="selectAll" resultType="Sponsor">
+		select * from sponsor order by sponsor_idx desc
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int" resultType="Sponsor">
+		select * from sponsor
+		 where sponsor_idx = #{sponsor_idx}
+	</select>
+
+	<!-- U수정 : mem_idx가 일치할 경우만 -->
+	<update id="update" parameterType="Sponsor">
+		update sponsor set sponsor_company = #{sponsor_company}
+		, sponsor_amount = {sponsor_amount}
+		, sponsor_bank = {sponsor_bank}
+		, sponsor_account = {sponsor_account}
+		, sponsor_manager = {sponsor_manager}
+		, sponsor_tel = {sponsor_tel}
+		 where sponsor_idx = #{sponsor_idx}
+	</update>
+
+	<!-- D삭제 : mem_idx가 일치할 경우만 -->
+	<delete id="delete" parameterType="int">
+		delete from sponsor
+		 where sponsor_idx = #{sponsor_idx}
+	</delete>
+</mapper>

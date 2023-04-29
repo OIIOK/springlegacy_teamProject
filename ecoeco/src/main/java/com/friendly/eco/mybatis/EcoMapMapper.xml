@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EcoMap">
+
+	<resultMap type="EcoMap" id="ecoMapMap">
+		<id column="ecomap_idx" property="ecomap_idx" />
+		<result column="ecomap_placename" property="ecomap_placename" />
+		<result column="ecomap_addr" property="ecomap_addr" />
+		<result column="ecomap_lati" property="ecomap_lati" />
+		<result column="ecomap_longi" property="ecomap_longi" />
+		<result column="ecomap_grade" property="ecomap_grade" />
+		<result column="ecomap_detail" property="ecomap_detail" />
+		<result column="ecomap_regdate" property="ecomap_regdate" />
+
+		<!-- 부모인 EcoMapCategory 연결 -->
+		<association 
+			column="ecomapcategory_idx"
+			property="ecoMapCategory"
+			javaType="EcoMapCategory" 
+			select="EcoMapCategory.selectByPK" />
+
+		<!-- 부모인 Mem 연결 -->
+		<association 
+			column="mem_idx" 
+			javaType="Mem"
+			property="mem" 
+			select="Mem.select" />
+	</resultMap>
+
+
+	<!-- C입력 -->
+	<insert id="insert" parameterType="EcoMap">
+		insert into ecomap(ecomap_idx, ecomapcategory_idx, mem_idx, ecomap_placename, ecomap_addr, ecomap_lati, ecomap_longi, ecomap_grade, ecomap_detail)
+		 values(seq_ecomap.nextval, #{ecomapCategory.ecomapcategory_idx}, #{mem.mem_idx}, #{ecomap_placename}, #{ecomap_addr}, #{ecomap_lati}, #{ecomap_longi}, #{ecomap_grade}, #{ecomap_detail})
+	</insert>
+
+	<!-- R조회 : 목록 -->
+	<select id="selectAll" resultMap="ecoMapMap">
+		select * from ecomap order by ecomap_idx desc
+	</select>
+
+	<!-- R조회 : 상세 -->
+	<select id="selectByPK" parameterType="int" resultMap="ecoMapMap">
+		select * from ecomap
+		 where ecomap_idx = #{ecomap_idx}
+	</select>
+
+	<!-- U수정 : mem_idx가 일치할 경우만 -->
+	<update id="update" parameterType="EcoMap">
+		update ecomap set = ecomapcategory_idx = #{ecomapCategory.ecomapcategory_idx}
+		, ecomap_placename = #{ecomap_placename}
+		, ecomap_addr = #{ecomap_addr}
+		, ecomap_lati = #{ecomap_lati}
+		, ecomap_longi = #{ecomap_longi}
+		, ecomap_grade = #{ecomap_grade}
+		, ecomap_detail = #{ecomap_detail}
+		 where ecomap_idx = #{ecomap_idx} and mem_idx = #{mem.mem_idx}
+	</update>
+
+	<!-- D삭제 : mem_idx가 일치할 경우만 -->
+	<delete id="delete" parameterType="int">
+		delete from ecomap
+		where ecomap_idx = #{ecomap_idx} and mem_idx = #{mem.mem_idx}
+	</delete>
+</mapper>
