@@ -222,7 +222,7 @@
 				<td>{{chatter.chatter_idx}}</td>
 				<td class="box-style" @click="moveDetail(chatter)"><a href="#"><img :src="'/resources/data/community/chatter/'+chatter.chatter_thumbnail"></a></td>
 				<td @click="moveDetail(chatter)"><a href="#">{{chatter.chatter_title}}</a></td>
-				<td>{{chatter.mem.memNickname}}</td>
+				<td>제리</td>
 				<td>{{chatter.chatter_regdate}}</td>
 				<td>{{chatter.chatter_hits}}</td>
 			</tr>

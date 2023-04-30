@@ -145,7 +145,7 @@ body {
 								<a href="#"><img src="/resources/client/img/LikeIcon.png" width="30" ></a>
 							</div>
 							<div class="row" style="padding: 10px 0 10px 0; vertical-align: middle">[진행중]</div>
-							<div class="row" style="padding: 10px 0 10px 0; vertical-align: middle">{{sharing.mem.memNickname}}</div>
+							<div class="row" style="padding: 10px 0 10px 0; vertical-align: middle">제리</div>
 							<div class="row" style="padding: 10px 0 10px 0; vertical-align: middle">{{sharing.sharing_regdate}}</div>
 						</div>
 					</div>
